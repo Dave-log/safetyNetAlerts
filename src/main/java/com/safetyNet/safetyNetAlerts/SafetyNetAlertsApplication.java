@@ -1,8 +1,11 @@
 package com.safetyNet.safetyNetAlerts;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetyNet.safetyNetAlerts.model.FireStation;
+import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
+import com.safetyNet.safetyNetAlerts.service.FireStationService;
+import com.safetyNet.safetyNetAlerts.service.MedicalRecordService;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
 import com.safetyNet.safetyNetAlerts.utils.JsonReader;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @SpringBootApplication
@@ -26,20 +28,22 @@ public class SafetyNetAlertsApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		logger.info("Hello World!");
-	}
+	public void run(String... args) throws Exception {}
 
 	@Bean
-	CommandLineRunner initDatabaseFromJsonFile(PersonService personService) {
+	CommandLineRunner initDatabaseFromJsonFile(PersonService personService, FireStationService fireStationService, MedicalRecordService medicalRecordService) {
 		return args -> {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonReader jsonReader = new JsonReader();
 			String jsonFilePath = "src/main/resources/data.json";
 			try {
 				List<Person> listPerson = jsonReader.readListFromFile(jsonFilePath, "persons", Person.class);
+				List<FireStation> listFireStation = jsonReader.readListFromFile(jsonFilePath, "firestations", FireStation.class);
+				List<MedicalRecord> listMedicalRecord = jsonReader.readListFromFile(jsonFilePath, "medicalrecords", MedicalRecord.class);
 				personService.saveAll(listPerson);
-				logger.info("Persons Saved in database!");
+				fireStationService.saveAll(listFireStation);
+				medicalRecordService.saveAll(listMedicalRecord);
+				logger.info("Entities saved to database!");
 			} catch (IOException e) {
 				logger.error("Unable to save persons to database: " + e.getMessage());
 			}

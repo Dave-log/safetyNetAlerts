@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/persons")
 public class PersonController {
-
     private static final Logger logger = LogManager.getLogger(PersonController.class);
 
     private PersonService personService;
