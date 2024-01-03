@@ -28,25 +28,8 @@ public class SafetyNetAlertsApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {}
-
-	@Bean
-	CommandLineRunner initDatabaseFromJsonFile(PersonService personService, FireStationService fireStationService, MedicalRecordService medicalRecordService) {
-		return args -> {
-			ObjectMapper mapper = new ObjectMapper();
-			JsonReader jsonReader = new JsonReader();
-			String jsonFilePath = "src/main/resources/data.json";
-			try {
-				List<Person> listPerson = jsonReader.readListFromFile(jsonFilePath, "persons", Person.class);
-				List<FireStation> listFireStation = jsonReader.readListFromFile(jsonFilePath, "firestations", FireStation.class);
-				List<MedicalRecord> listMedicalRecord = jsonReader.readListFromFile(jsonFilePath, "medicalrecords", MedicalRecord.class);
-				personService.saveAll(listPerson);
-				fireStationService.saveAll(listFireStation);
-				medicalRecordService.saveAll(listMedicalRecord);
-				logger.info("Entities saved to database!");
-			} catch (IOException e) {
-				logger.error("Unable to save persons to database: " + e.getMessage());
-			}
-		};
+	public void run(String... args) throws Exception {
+		logger.info("Launching SafetyNet Alerts Application");
 	}
+
 }
