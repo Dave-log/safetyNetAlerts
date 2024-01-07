@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -16,35 +17,35 @@ public class MedicalRecordController {
     private static final Logger logger = LogManager.getLogger(MedicalRecordController.class);
 
     @Autowired
-    private MedicalRecordService medicalRecordService;
+    private final MedicalRecordService medicalRecordService;
 
     public MedicalRecordController(MedicalRecordService medicalRecordService) {
         this.medicalRecordService = medicalRecordService;
     }
 
-    @GetMapping("/list")
-    public List<MedicalRecord> list() {
-        return medicalRecordService.getMedicalRecords();
+    @GetMapping
+    public Collection<MedicalRecord> findAll() {
+        return medicalRecordService.findAll();
     }
 
-    @PostMapping("/add")
-    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.createMedicalRecord(medicalRecord);
+    @PostMapping
+    public void create(@RequestBody MedicalRecord medicalRecord) {
+        medicalRecordService.create(medicalRecord);
     }
 
-    @PostMapping("/addlist")
-    public List<MedicalRecord> addMedicalRecords(@RequestBody List<MedicalRecord> listMedicalRecords) {
-        return medicalRecordService.createMedicalRecords(listMedicalRecords);
+    @PostMapping("/list")
+    public void creates(@RequestBody List<MedicalRecord> listMedicalRecords) {
+        medicalRecordService.creates(listMedicalRecords);
     }
 
-    @PutMapping("/update")
-    public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.updateMedicalRecord(medicalRecord);
+    @PutMapping
+    public MedicalRecord update(@RequestBody MedicalRecord medicalRecord) {
+        return medicalRecordService.update(medicalRecord);
     }
 
-    @DeleteMapping("/delete")
-    public MedicalRecord deleteMedicalRecord(@RequestParam String firstName, @RequestParam String lastName) {
-        return medicalRecordService.deleteMedicalRecord(firstName, lastName);
+    @DeleteMapping
+    public MedicalRecord delete(@RequestParam String firstName, @RequestParam String lastName) {
+        return medicalRecordService.delete(firstName, lastName);
     }
 
 }

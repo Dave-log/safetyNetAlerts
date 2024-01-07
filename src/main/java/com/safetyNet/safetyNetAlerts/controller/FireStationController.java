@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -16,36 +17,36 @@ public class FireStationController {
     private static final Logger logger = LogManager.getLogger(FireStationController.class);
 
     @Autowired
-    private FireStationService fireStationService;
+    private final FireStationService fireStationService;
 
     public FireStationController(FireStationService fireStationService) {
         this.fireStationService = fireStationService;
     }
 
-    @GetMapping("/list")
-    public Iterable<FireStation> list() {
-        return fireStationService.getFireStations();
+    @GetMapping
+    public Collection<FireStation> findAll() {
+        return fireStationService.findAll();
     }
 
-    @PostMapping("/add")
-    public FireStation addFireStation(@RequestBody FireStation fireStation) {
-        return fireStationService.createFireStation(fireStation);
+    @PostMapping
+    public void create(@RequestBody FireStation fireStation) {
+        fireStationService.create(fireStation);
     }
 
-    @PostMapping("/addlist")
-    public List<FireStation> addPersons(@RequestBody List<FireStation> listFireStations) {
-        return fireStationService.createFireStations(listFireStations);
+    @PostMapping("/list")
+    public void creates(@RequestBody List<FireStation> listFireStations) {
+        fireStationService.creates(listFireStations);
     }
 
-    @PutMapping("/update")
-    public FireStation updatePerson(@RequestBody FireStation fireStation) {
-        return fireStationService.updateFireStation(fireStation);
+    @PutMapping
+    public FireStation update(@RequestBody FireStation fireStation) {
+        return fireStationService.update(fireStation);
     }
 
     @DeleteMapping("/deleteByAddress")
-    public FireStation deleteFireStationByAddress(@RequestParam String address) { return fireStationService.deleteFireStationByAddress(address); }
+    public void deleteFireStationByAddress(@RequestParam String station, @RequestParam String address) { fireStationService.deleteByAddress(station, address); }
 
     @DeleteMapping("/deleteByStation")
-    public List<FireStation> deleteFireStationByStation(@RequestParam String station) { return fireStationService.deleteFireStationByStation(station); }
+    public void deleteFireStationByStation(@RequestParam String station) { fireStationService.deleteByStation(station); }
 
 }

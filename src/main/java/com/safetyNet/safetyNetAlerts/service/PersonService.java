@@ -7,68 +7,69 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PersonService {
+public class PersonService implements EntityService<Person> {
 
     private static final Logger logger = LogManager.getLogger(PersonService.class);
 
     @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public List<Person> getPersons() {
+    @Override
+    public Collection<Person> findAll() {
         return personRepository.findAll();
     }
 
-    public Person createPerson(Person person) {
-        return personRepository.save(person);
+    @Override
+    public void create(Person person) {
+        personRepository.save(person);
     }
 
-    public List<Person> createPersons(List<Person> listPersons) {
-        return personRepository.saveAll(listPersons);
+    @Override
+    public void creates(List<Person> listPersons) {
+        personRepository.saveAll(listPersons);
     }
 
-    public Optional<Person> getPerson(String firstName, String lastName) {
-        return personRepository.findByFirstNameAndLastName(firstName, lastName);
+    public Person findByFullName(String firstName, String lastName) {
+        return personRepository.find(firstName, lastName);
     }
 
-    public Person updatePerson(Person person) {
+    @Override
+    public Person update(Person person) {
 
         Person existingPerson = null;
-        Optional<Person> optionalPerson = getPerson(person.getFirstName(), person.getLastName());
-        if (optionalPerson.isPresent()) {
-            existingPerson = optionalPerson.get();
-            existingPerson.setAddress(person.getAddress());
-            existingPerson.setZip(person.getZip());
-            existingPerson.setCity(person.getCity());
-            existingPerson.setPhone(person.getPhone());
-            existingPerson.setEmail(person.getEmail());
+        Person optionalPerson = findByFullName(person.getFirstName(), person.getLastName());
+        if (optionalPerson != null) {
+            existingPerson = optionalPerson;
             personRepository.save(existingPerson);
             logger.info("The person " + person.getFirstName() + " " + person.getLastName() + " has been updated.");
         } else {
-            createPerson(person);
-            logger.warn("The person " + person.getFirstName() + " " + person.getLastName() + " does not exist and has been added to the database.");
+            logger.error("The person " + person.getFirstName() + " " + person.getLastName() + " does not exist.");
         }
         return existingPerson;
     }
 
-    public Person deletePerson(String firstName, String lastName) {
+    public Person delete(String firstName, String lastName) {
 
         Person existingPerson = null;
-        Optional<Person> optionalPerson = getPerson(firstName, lastName);
-        if (optionalPerson.isPresent()) {
-            existingPerson = optionalPerson.get();
-            personRepository.delete(existingPerson);
+        Person optionalPerson = findByFullName(firstName, lastName);
+        if (optionalPerson != null) {
+            existingPerson = optionalPerson;
+            personRepository.delete(firstName, lastName);
             logger.info("The person " + firstName + " " + lastName + " has been deleted from database.");
         } else {
-            logger.warn("The person " + firstName + " " + lastName + " does not exist.");
+            logger.error("The person " + firstName + " " + lastName + " does not exist.");
         }
         return existingPerson;
     }
+
+    @Override
+    public Person delete(){ return null; }
 }

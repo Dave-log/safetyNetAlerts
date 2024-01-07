@@ -7,66 +7,69 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MedicalRecordService {
+public class MedicalRecordService implements EntityService<MedicalRecord> {
 
     private static final Logger logger = LogManager.getLogger(MedicalRecordService.class);
 
     @Autowired
-    private MedicalRecordRepository medicalRecordRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
 
     public MedicalRecordService(MedicalRecordRepository medicalRecordRepository) {
         this.medicalRecordRepository = medicalRecordRepository; 
     }
 
-    public List<MedicalRecord> getMedicalRecords() {
+    @Override
+    public Collection<MedicalRecord> findAll() {
         return medicalRecordRepository.findAll();
     }
 
-    public MedicalRecord createMedicalRecord(MedicalRecord medicalRecord) {
-        return medicalRecordRepository.save(medicalRecord);
+    @Override
+    public void create(MedicalRecord medicalRecord) {
+        medicalRecordRepository.save(medicalRecord);
     }
 
-    public List<MedicalRecord> createMedicalRecords(List<MedicalRecord> listMedicalRecords) {
-        return medicalRecordRepository.saveAll(listMedicalRecords);
+    public void creates(List<MedicalRecord> listMedicalRecords) {
+        medicalRecordRepository.saveAll(listMedicalRecords);
     }
 
-    public Optional<MedicalRecord> getMedicalRecord(String firstName, String lastName) {
-        return medicalRecordRepository.findByFirstNameAndLastName(firstName, lastName);
+    public MedicalRecord findByFullName(String firstName, String lastName) {
+        return medicalRecordRepository.find(firstName, lastName);
     }
 
-    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
+    @Override
+    public MedicalRecord update(MedicalRecord medicalRecord) {
 
         MedicalRecord existingMedicalRecord = null;
-        Optional<MedicalRecord> optionalMedicalRecord = getMedicalRecord(medicalRecord.getFirstName(), medicalRecord.getLastName());
-        if (optionalMedicalRecord.isPresent()) {
-            existingMedicalRecord = optionalMedicalRecord.get();
-            existingMedicalRecord.setMedications(medicalRecord.getMedications());
-            existingMedicalRecord.setAllergies(medicalRecord.getAllergies());
-            existingMedicalRecord.setBirthdate(medicalRecord.getBirthdate());
+        MedicalRecord optionalMedicalRecord = findByFullName(medicalRecord.getFirstName(), medicalRecord.getLastName());
+        if (optionalMedicalRecord != null) {
+            existingMedicalRecord = optionalMedicalRecord;
             medicalRecordRepository.save(existingMedicalRecord);
             logger.info("The medical record of " + medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " has been updated.");
         } else {
-            createMedicalRecord(medicalRecord);
-            logger.warn("The medical record of " + medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " does not exist and has been added to the database.");
+            logger.error("The medical record of " + medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " does not exist.");
         }
         return existingMedicalRecord;
     }
 
-    public MedicalRecord deleteMedicalRecord(String firstName, String lastName) {
+    public MedicalRecord delete(String firstName, String lastName) {
 
         MedicalRecord existingMedicalRecord = null;
-        Optional<MedicalRecord> optionalMedicalRecord = getMedicalRecord(firstName, lastName);
-        if (optionalMedicalRecord.isPresent()) {
-            existingMedicalRecord = optionalMedicalRecord.get();
-            medicalRecordRepository.delete(existingMedicalRecord);
+        MedicalRecord optionalMedicalRecord = findByFullName(firstName, lastName);
+        if (optionalMedicalRecord != null) {
+            existingMedicalRecord = optionalMedicalRecord;
+            medicalRecordRepository.delete(firstName, lastName);
             logger.info("The medical record of " + firstName + " " + lastName + " has been deleted from database.");
         } else {
-            logger.warn("The medical record of " + firstName + " " + lastName + " does not exist.");
+            logger.error("The medical record of " + firstName + " " + lastName + " does not exist.");
         }
         return existingMedicalRecord;
     }
+
+    @Override
+    public MedicalRecord delete(){ return null; }
 }

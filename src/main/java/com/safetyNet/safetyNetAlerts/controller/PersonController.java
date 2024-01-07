@@ -5,9 +5,9 @@ import com.safetyNet.safetyNetAlerts.service.PersonService;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -17,35 +17,34 @@ public class PersonController {
     private static final Logger logger = LogManager.getLogger(PersonController.class);
 
     @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
-    @GetMapping("/list")
-    public List<Person> list() {
-        return personService.getPersons();
+    @GetMapping
+    public Collection<Person> findAll() {
+        return personService.findAll();
     }
 
-    @PostMapping("/add")
-    public Person addPerson(@RequestBody Person person) {
-        return personService.createPerson(person);
+    @PostMapping
+    public void create(@RequestBody Person person) {
+        personService.create(person);
     }
 
-    @PostMapping("/addlist")
-    public List<Person> addPersons(@RequestBody List<Person> listPersons) {
-        return personService.createPersons(listPersons);
+    @PostMapping("/list")
+    public void creates(@RequestBody List<Person> listPersons) {
+        personService.creates(listPersons);
     }
 
-    @PutMapping("/update")
-    public Person updatePerson(@RequestBody Person person) {
-        return personService.updatePerson(person);
+    @PutMapping
+    public Person update(@RequestBody Person person) {
+        return personService.update(person);
     }
 
-    @DeleteMapping("/delete")
-    public Person deletePerson(@RequestParam String firstName, @RequestParam String lastName) { return personService.deletePerson(firstName, lastName); }
-
-    //@DeleteMapping("/delete/{firstName}/{lastName}")
-    //public Person deletePerson(@PathVariable String firstName, @PathVariable String lastName) { return personService.deletePerson(firstName, lastName); }
+    @DeleteMapping
+    public Person delete(@RequestParam String firstName, @RequestParam String lastName) {
+        return personService.delete(firstName, lastName);
+    }
 }

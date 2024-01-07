@@ -1,10 +1,45 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.Person;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.*;
 
-public interface PersonRepository extends JpaRepository<Person,Long> {
-    Optional<Person> findByFirstNameAndLastName(String firstName, String lastName);
+@Repository
+public class PersonRepository implements EntityRepository<Person> {
+
+    private final Map<Pair<String, String>, Person> personMap = new HashMap<>();
+
+    public Person find(String firstName, String lastName) {
+        return personMap.get(Pair.of(firstName, lastName));
+    }
+
+    @Override
+    public void save(Person person) {
+        personMap.put(Pair.of(person.getFirstName(), person.getLastName()), person);
+    }
+
+    public void delete(String firstName, String lastName) {
+        personMap.remove(Pair.of(firstName, lastName));
+    }
+
+    @Override
+    public void saveAll(Collection<Person> list) {
+        for (Person person : list) {
+            Pair<String, String> key = Pair.of(person.getFirstName(), person.getLastName());
+            personMap.put(key, person);
+        }
+    }
+
+    @Override
+    public Collection<Person> findAll() {
+        return personMap.values();
+    }
+
+    @Override
+    public Person find(){ return null; }
+
+    @Override
+    public void delete(){}
 }
