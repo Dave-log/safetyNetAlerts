@@ -2,6 +2,8 @@ package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.controller.FireStationController;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,6 +11,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class FireStationRepository implements EntityRepository<FireStation> {
+
+    private final static Logger logger = LogManager.getLogger(FireStationRepository.class);
 
     private final Map<String, Set<String>> fireStationMap = new HashMap<>();
 
@@ -23,12 +27,13 @@ public class FireStationRepository implements EntityRepository<FireStation> {
     @Override
     public void save(FireStation fireStation) {
         String station = fireStation.getStation();
-        Set<String> addresses = fireStation.getAddresses();
+        String address = fireStation.getAddress();
 
         if (fireStationMap.containsKey(station)) {
-            fireStationMap.get(station).addAll(addresses);
+            fireStationMap.get(station).add(address);
         } else {
-            Set<String> newAddresses = new HashSet<>(addresses);
+            Set<String> newAddresses = new HashSet<>();
+            newAddresses.add(address);
             fireStationMap.put(station, newAddresses);
         }
     }
@@ -52,7 +57,6 @@ public class FireStationRepository implements EntityRepository<FireStation> {
         for (FireStation fireStation : list) {
             save(fireStation);
         }
-        System.out.println("Taille de la fireStationMap : " + fireStationMap.size());
     }
 
     @Override

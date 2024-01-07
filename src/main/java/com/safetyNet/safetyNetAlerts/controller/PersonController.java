@@ -24,6 +24,11 @@ public class PersonController {
     }
 
     @GetMapping
+    public Person find(@RequestParam String firstName, @RequestParam String lastName) {
+        return personService.findByFullName(firstName, lastName);
+    }
+
+    @GetMapping("/all")
     public Collection<Person> findAll() {
         return personService.findAll();
     }
