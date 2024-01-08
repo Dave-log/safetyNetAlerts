@@ -1,6 +1,5 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
-import com.safetyNet.safetyNetAlerts.controller.FireStationController;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,42 +13,42 @@ public class FireStationRepository implements EntityRepository<FireStation> {
 
     private final static Logger logger = LogManager.getLogger(FireStationRepository.class);
 
-    private final Map<String, Set<String>> fireStationMap = new HashMap<>();
+    private final Map<Integer, Set<String>> fireStationMap = new HashMap<>();
 
-    public FireStation find(String station) {
-        Set<String> addresses = fireStationMap.get(station);
+    public FireStation find(Integer stationNumber) {
+        Set<String> addresses = fireStationMap.get(stationNumber);
         if (addresses != null) {
-            return new FireStation(station, addresses);
+            return new FireStation(stationNumber, addresses);
         }
         return null;
     }
 
     @Override
     public void save(FireStation fireStation) {
-        String station = fireStation.getStation();
+        Integer stationNumber = fireStation.getStationNumber();
         String address = fireStation.getAddress();
 
-        if (fireStationMap.containsKey(station)) {
-            fireStationMap.get(station).add(address);
+        if (fireStationMap.containsKey(stationNumber)) {
+            fireStationMap.get(stationNumber).add(address);
         } else {
             Set<String> newAddresses = new HashSet<>();
             newAddresses.add(address);
-            fireStationMap.put(station, newAddresses);
+            fireStationMap.put(stationNumber, newAddresses);
         }
     }
 
-    public void deleteByAddress(String station, String address) {
-        if (fireStationMap.containsKey(station)) {
-            Set<String> addresses = fireStationMap.get(station);
+    public void deleteByAddress(Integer stationNumber, String address) {
+        if (fireStationMap.containsKey(stationNumber)) {
+            Set<String> addresses = fireStationMap.get(stationNumber);
 
             if (addresses.remove(address) && addresses.isEmpty()) {
-                fireStationMap.remove(station);
+                fireStationMap.remove(stationNumber);
             }
         }
     }
 
-    public void deleteByStation(String station) {
-        fireStationMap.remove(station);
+    public void deleteByStation(Integer stationNumber) {
+        fireStationMap.remove(stationNumber);
     }
 
     @Override

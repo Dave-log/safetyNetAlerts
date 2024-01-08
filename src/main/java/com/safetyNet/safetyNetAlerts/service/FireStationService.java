@@ -1,13 +1,16 @@
 package com.safetyNet.safetyNetAlerts.service;
 
 import com.safetyNet.safetyNetAlerts.model.FireStation;
+import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.FireStationRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -34,33 +37,39 @@ public class FireStationService implements EntityService<FireStation> {
         fireStationRepository.saveAll(listFireStations);
     }
 
-    public FireStation find(String station) {
-        return fireStationRepository.find(station);
+    public FireStation find(int stationNumber) {
+        return fireStationRepository.find(stationNumber);
+    }
+
+    public List<Person> findPersonsCoveredByStation(Integer stationNumber) {
+        List<Person> personsCoveredByStation = new ArrayList<>();
+
+        return personsCoveredByStation;
     }
 
     @Override
     public FireStation update(FireStation fireStation) {
 
         FireStation existingFireStation = null;
-        FireStation optionalFireStation = find(fireStation.getStation());
+        FireStation optionalFireStation = find(fireStation.getStationNumber());
         if (optionalFireStation != null) {
             existingFireStation = optionalFireStation;
             fireStationRepository.save(existingFireStation);
-            logger.info("The addresses of firestation number " + existingFireStation.getStation() + " has been updated.");
+            logger.info("The addresses of firestation number " + existingFireStation.getStationNumber() + " has been updated.");
         } else {
             logger.error("The firestation does not exist. ");
         }
         return existingFireStation;
     }
 
-    public void deleteByAddress(String station, String address) {
+    public void deleteByAddress(Integer stationNumber, String address) {
 
-        fireStationRepository.deleteByAddress(station, address);
+        fireStationRepository.deleteByAddress(stationNumber, address);
     }
 
-    public void deleteByStation(String station) {
+    public void deleteByStation(Integer stationNumber) {
 
-        fireStationRepository.deleteByStation(station);
+        fireStationRepository.deleteByStation(stationNumber);
     }
 
     @Override

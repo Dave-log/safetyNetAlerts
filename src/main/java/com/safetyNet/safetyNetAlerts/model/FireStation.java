@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -17,7 +16,7 @@ import java.util.Set;
 public class FireStation {
 
     @JsonProperty("station")
-    private String station;
+    private Integer stationNumber;
 
     @JsonProperty("address")
     private String address;
@@ -25,8 +24,8 @@ public class FireStation {
     @JsonProperty("addresses")
     private Set<String> addresses;
 
-    public FireStation(String station, Set<String> addresses) {
-        this.station = station;
+    public FireStation(Integer stationNumber, Set<String> addresses) {
+        this.stationNumber = stationNumber;
         this.addresses = addresses;
     }
 }

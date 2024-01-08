@@ -1,7 +1,6 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.Person;
-import com.safetyNet.safetyNetAlerts.utils.LoggingHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.util.Pair;
