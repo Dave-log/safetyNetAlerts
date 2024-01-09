@@ -1,5 +1,7 @@
 package com.safetyNet.safetyNetAlerts.service;
 
+import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
+import com.safetyNet.safetyNetAlerts.model.AgeGroupCount;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.FireStationRepository;
@@ -8,9 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,8 +20,13 @@ public class FireStationService implements EntityService<FireStation> {
 
     @Autowired
     private final FireStationRepository fireStationRepository;
+    @Autowired
+    private final EmergencyService emergencyService;
 
-    public FireStationService(FireStationRepository fireStationRepository) { this.fireStationRepository = fireStationRepository; }
+    public FireStationService(FireStationRepository fireStationRepository, EmergencyService emergencyService) {
+        this.fireStationRepository = fireStationRepository;
+        this.emergencyService = emergencyService;
+    }
 
     @Override
     public Collection<FireStation> findAll() {
@@ -41,10 +46,13 @@ public class FireStationService implements EntityService<FireStation> {
         return fireStationRepository.find(stationNumber);
     }
 
-    public List<Person> findPersonsCoveredByStation(Integer stationNumber) {
-        List<Person> personsCoveredByStation = new ArrayList<>();
+    public FireStationDTO findPersonsCoveredByStation(Integer stationNumber) {
+        List<Person> personsCoveredByStation = emergencyService.findPersonsCoveredByStation(stationNumber);
+        AgeGroupCount ageGroupCount = AgeGroupCounter.countAgeGroups(personsCoveredByStation);
+        int numberOfAdults = ageGroupCount.getAdults();
+        int numberOfChildren = ageGroupCount.getChildren();
 
-        return personsCoveredByStation;
+        return new FireStationDTO(personsCoveredByStation, numberOfAdults, numberOfChildren);
     }
 
     @Override

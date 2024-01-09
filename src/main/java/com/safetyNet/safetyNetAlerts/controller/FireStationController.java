@@ -1,5 +1,8 @@
 package com.safetyNet.safetyNetAlerts.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.safetyNet.safetyNetAlerts.configuration.Views;
+import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.service.FireStationService;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +27,13 @@ public class FireStationController {
     }
 
     @GetMapping
+    @ResponseBody
+    @JsonView(Views.WithAge.class)
+    public FireStationDTO findPersonsCoveredByStation(@RequestParam Integer stationNumber) {
+        return fireStationService.findPersonsCoveredByStation(stationNumber);
+    }
+
+    @GetMapping("/all")
     public Collection<FireStation> findAll() {
         return fireStationService.findAll();
     }
@@ -44,9 +54,9 @@ public class FireStationController {
     }
 
     @DeleteMapping("/deleteByAddress")
-    public void deleteFireStationByAddress(@RequestParam String station, @RequestParam String address) { fireStationService.deleteByAddress(station, address); }
+    public void deleteFireStationByAddress(@RequestParam Integer stationNumber, @RequestParam String address) { fireStationService.deleteByAddress(stationNumber, address); }
 
     @DeleteMapping("/deleteByStation")
-    public void deleteFireStationByStation(@RequestParam String station) { fireStationService.deleteByStation(station); }
+    public void deleteFireStationByStation(@RequestParam Integer stationNumber) { fireStationService.deleteByStation(stationNumber); }
 
 }

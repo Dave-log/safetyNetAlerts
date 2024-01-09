@@ -19,4 +19,8 @@ public class AgeCalculator {
 
         return currentDate.getYear() - birthdateDate.getYear();
     }
+
+    public static boolean isChild(int age) {
+        return age <= 18;
+    }
 }

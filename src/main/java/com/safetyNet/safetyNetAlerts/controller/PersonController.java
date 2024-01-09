@@ -1,5 +1,7 @@
 package com.safetyNet.safetyNetAlerts.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
 import org.apache.logging.log4j.Logger;
@@ -24,11 +26,13 @@ public class PersonController {
     }
 
     @GetMapping
+    @JsonView(Views.Base.class)
     public Person find(@RequestParam String firstName, @RequestParam String lastName) {
         return personService.findByFullName(firstName, lastName);
     }
 
     @GetMapping("/all")
+    @JsonView(Views.Base.class)
     public Collection<Person> findAll() {
         return personService.findAll();
     }

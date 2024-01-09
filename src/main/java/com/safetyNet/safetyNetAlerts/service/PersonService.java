@@ -1,5 +1,6 @@
 package com.safetyNet.safetyNetAlerts.service;
 
+import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
@@ -7,8 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService implements EntityService<Person> {
@@ -20,6 +23,33 @@ public class PersonService implements EntityService<Person> {
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
+    }
+
+    public Person findByFullName(String firstName, String lastName) {
+        return personRepository.find(firstName, lastName);
+    }
+
+    public List<Person> findByAddress(String address) {
+        return findAll().stream()
+                .filter(person -> person.getAddress().equals(address))
+                .collect(Collectors.toList());
+    }
+
+    public List<ChildAlertDTO> findChildrenByAddress(String address) {
+        List<ChildAlertDTO> listChildren = new ArrayList<>();
+        List<Person> listPersonsAtAddress = findByAddress(address);
+
+        for (Person person : listPersonsAtAddress) {
+            if (AgeCalculator.isChild(person.getAge())) {
+                List<Person> householdMembers = listPersonsAtAddress.stream()
+                        .filter(p -> !AgeCalculator.isChild(p.getAge()))
+                        .toList();
+
+                ChildAlertDTO childAlertDTO = new ChildAlertDTO(person, householdMembers);
+                listChildren.add(childAlertDTO);
+            }
+        }
+        return listChildren;
     }
 
     @Override
@@ -35,10 +65,6 @@ public class PersonService implements EntityService<Person> {
     @Override
     public void creates(List<Person> listPersons) {
         personRepository.saveAll(listPersons);
-    }
-
-    public Person findByFullName(String firstName, String lastName) {
-        return personRepository.find(firstName, lastName);
     }
 
     @Override
