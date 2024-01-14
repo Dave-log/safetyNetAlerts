@@ -1,74 +1,27 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.FireStation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-@Repository
-public class FireStationRepository implements EntityRepository<FireStation> {
+public interface FireStationRepository {
 
-    private final static Logger logger = LogManager.getLogger(FireStationRepository.class);
+    Map<Integer, Set<String>> fireStationMap = new HashMap<>();
 
-    private final Map<Integer, Set<String>> fireStationMap = new HashMap<>();
+    FireStation find(Integer StationNumber);
 
-    public FireStation find(Integer stationNumber) {
-        Set<String> addresses = fireStationMap.get(stationNumber);
-        if (addresses != null) {
-            return new FireStation(stationNumber, addresses);
-        }
-        return null;
-    }
+    List<FireStation> findAll();
 
-    @Override
-    public void save(FireStation fireStation) {
-        Integer stationNumber = fireStation.getStationNumber();
-        String address = fireStation.getAddress();
+    void save(FireStation fireStation);
 
-        if (fireStationMap.containsKey(stationNumber)) {
-            fireStationMap.get(stationNumber).add(address);
-        } else {
-            Set<String> newAddresses = new HashSet<>();
-            newAddresses.add(address);
-            fireStationMap.put(stationNumber, newAddresses);
-        }
-    }
+    void saveAll(List<FireStation> fireStationList);
 
-    public void deleteByAddress(Integer stationNumber, String address) {
-        if (fireStationMap.containsKey(stationNumber)) {
-            Set<String> addresses = fireStationMap.get(stationNumber);
+    void update(String address, Integer newStationNumber);
 
-            if (addresses.remove(address) && addresses.isEmpty()) {
-                fireStationMap.remove(stationNumber);
-            }
-        }
-    }
+    void deleteAddress(Integer stationNumber, String address);
 
-    public void deleteByStation(Integer stationNumber) {
-        fireStationMap.remove(stationNumber);
-    }
-
-    @Override
-    public void saveAll(Collection<FireStation> list) {
-        for (FireStation fireStation : list) {
-            save(fireStation);
-        }
-    }
-
-    @Override
-    public Collection<FireStation> findAll() {
-       return fireStationMap.entrySet().stream()
-               .map(entry -> new FireStation(entry.getKey(), new HashSet<>(entry.getValue())))
-               .collect(Collectors.toList());
-    }
-
-    @Override
-    public FireStation find() { return null; }
-
-    @Override
-    public void delete() {}
-
+    void deleteFireStation(Integer stationNumber);
 }

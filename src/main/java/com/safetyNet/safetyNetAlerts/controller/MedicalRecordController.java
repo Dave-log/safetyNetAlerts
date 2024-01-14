@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -24,7 +23,12 @@ public class MedicalRecordController {
     }
 
     @GetMapping
-    public Collection<MedicalRecord> findAll() {
+    public MedicalRecord find(@RequestParam String firstName, @RequestParam String lastName) {
+        return medicalRecordService.find(firstName, lastName);
+    }
+
+    @GetMapping("/all")
+    public List<MedicalRecord> findAll() {
         return medicalRecordService.findAll();
     }
 
@@ -39,13 +43,13 @@ public class MedicalRecordController {
     }
 
     @PutMapping
-    public MedicalRecord update(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.update(medicalRecord);
+    public void update(@RequestBody MedicalRecord medicalRecord) {
+        medicalRecordService.update(medicalRecord);
     }
 
     @DeleteMapping
-    public MedicalRecord delete(@RequestParam String firstName, @RequestParam String lastName) {
-        return medicalRecordService.delete(firstName, lastName);
+    public void delete(@RequestParam String firstName, @RequestParam String lastName) {
+        medicalRecordService.delete(firstName, lastName);
     }
 
 }

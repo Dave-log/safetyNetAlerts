@@ -1,7 +1,8 @@
-package com.safetyNet.safetyNetAlerts.service;
+package com.safetyNet.safetyNetAlerts.utils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Pattern;
 
 public class AgeCalculator {
@@ -17,7 +18,7 @@ public class AgeCalculator {
         LocalDate birthdateDate = LocalDate.parse(birthdate, DATE_FORMATTER);
         LocalDate currentDate = LocalDate.now();
 
-        return currentDate.getYear() - birthdateDate.getYear();
+        return (int) ChronoUnit.YEARS.between(birthdateDate, currentDate);
     }
 
     public static boolean isChild(int age) {

@@ -2,46 +2,25 @@ package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Repository
-public class MedicalRecordRepository implements EntityRepository<MedicalRecord> {
+public interface MedicalRecordRepository {
 
-    private final Map<Pair<String, String>, MedicalRecord> medicalRecordMap = new HashMap<>();
+    Map<Pair<String, String>, MedicalRecord> medicalRecordMap = new HashMap<>();
 
-    public MedicalRecord find(String firstName, String lastName) {
-        return medicalRecordMap.get(Pair.of(firstName, lastName));
-    }
+    MedicalRecord find(String firstName, String lastName);
 
-    @Override
-    public void save(MedicalRecord medicalRecord) {
-        medicalRecordMap.put(Pair.of(medicalRecord.getFirstName(), medicalRecord.getLastName()), medicalRecord);
-    }
+    List<MedicalRecord> findAll();
 
-    public void delete(String firstName, String lastName) {
-        medicalRecordMap.remove(Pair.of(firstName, lastName));
-    }
+    void save(MedicalRecord medicalRecord);
 
-    @Override
-    public void saveAll(Collection<MedicalRecord> list) {
-        for (MedicalRecord medicalRecord : list) {
-            Pair<String, String> key = Pair.of(medicalRecord.getFirstName(), medicalRecord.getLastName());
-            medicalRecordMap.put(key, medicalRecord);
-        }
-    }
+    void saveAll(List<MedicalRecord> medicalRecordList);
 
-    @Override
-    public Collection<MedicalRecord> findAll() {
-        return medicalRecordMap.values();
-    }
+    void update(MedicalRecord medicalRecord);
 
-    @Override
-    public MedicalRecord find(){ return null; }
+    void delete(MedicalRecord medicalRecord);
 
-    @Override
-    public void delete(){}
 }

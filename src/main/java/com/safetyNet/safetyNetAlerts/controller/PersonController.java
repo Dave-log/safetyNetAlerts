@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -33,7 +32,7 @@ public class PersonController {
 
     @GetMapping("/all")
     @JsonView(Views.Base.class)
-    public Collection<Person> findAll() {
+    public List<Person> findAll() {
         return personService.findAll();
     }
 
@@ -43,17 +42,17 @@ public class PersonController {
     }
 
     @PostMapping("/list")
-    public void creates(@RequestBody List<Person> listPersons) {
-        personService.creates(listPersons);
+    public void creates(@RequestBody List<Person> personList) {
+        personService.creates(personList);
     }
 
     @PutMapping
-    public Person update(@RequestBody Person person) {
-        return personService.update(person);
+    public void update(@RequestBody Person person) {
+        personService.update(person);
     }
 
     @DeleteMapping
-    public Person delete(@RequestParam String firstName, @RequestParam String lastName) {
-        return personService.delete(firstName, lastName);
+    public void delete(@RequestParam String firstName, @RequestParam String lastName) {
+        personService.delete(firstName, lastName);
     }
 }

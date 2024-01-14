@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
-import com.safetyNet.safetyNetAlerts.service.FireStationService;
+import com.safetyNet.safetyNetAlerts.service.impl.FireStationServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ public class FireStationController {
     private static final Logger logger = LogManager.getLogger(FireStationController.class);
 
     @Autowired
-    private final FireStationService fireStationService;
+    private final FireStationServiceImpl fireStationService;
 
-    public FireStationController(FireStationService fireStationService) {
+    public FireStationController(FireStationServiceImpl fireStationService) {
         this.fireStationService = fireStationService;
     }
 
@@ -49,14 +49,14 @@ public class FireStationController {
     }
 
     @PutMapping
-    public FireStation update(@RequestBody FireStation fireStation) {
-        return fireStationService.update(fireStation);
+    public void update(@RequestParam String address, @RequestParam Integer newStationNumber) {
+        fireStationService.update(address, newStationNumber);
     }
 
     @DeleteMapping("/deleteByAddress")
-    public void deleteFireStationByAddress(@RequestParam Integer stationNumber, @RequestParam String address) { fireStationService.deleteByAddress(stationNumber, address); }
+    public void deleteFireStationByAddress(@RequestParam Integer stationNumber, @RequestParam String address) { fireStationService.deleteAddress(stationNumber, address); }
 
     @DeleteMapping("/deleteByStation")
-    public void deleteFireStationByStation(@RequestParam Integer stationNumber) { fireStationService.deleteByStation(stationNumber); }
+    public void deleteFireStationByStation(@RequestParam Integer stationNumber) { fireStationService.deleteFireStation(stationNumber); }
 
 }
