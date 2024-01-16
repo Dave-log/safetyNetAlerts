@@ -25,13 +25,13 @@ public class PersonController {
     }
 
     @GetMapping
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     public Person find(@RequestParam String firstName, @RequestParam String lastName) {
         return personService.findByFullName(firstName, lastName);
     }
 
     @GetMapping("/all")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     public List<Person> findAll() {
         return personService.findAll();
     }

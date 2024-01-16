@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
-import com.safetyNet.safetyNetAlerts.service.impl.FireStationServiceImpl;
+import com.safetyNet.safetyNetAlerts.service.EmergencyService;
+import com.safetyNet.safetyNetAlerts.service.FireStationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,21 @@ public class FireStationController {
     private static final Logger logger = LogManager.getLogger(FireStationController.class);
 
     @Autowired
-    private final FireStationServiceImpl fireStationService;
+    private final FireStationService fireStationService;
+    @Autowired
+    private final EmergencyService emergencyService;
 
-    public FireStationController(FireStationServiceImpl fireStationService) {
+
+    public FireStationController(FireStationService fireStationService, EmergencyService emergencyService) {
         this.fireStationService = fireStationService;
+        this.emergencyService = emergencyService;
     }
 
     @GetMapping
     @ResponseBody
-    @JsonView(Views.WithAge.class)
-    public FireStationDTO findPersonsCoveredByStation(@RequestParam Integer stationNumber) {
-        return fireStationService.findPersonsCoveredByStation(stationNumber);
+    @JsonView(Views.PersonWithAge.class)
+    public FireStationDTO getPersonsCoveredByStation(@RequestParam Integer stationNumber) {
+        return emergencyService.getPersonsCoveredByStationsSortedByAge(stationNumber);
     }
 
     @GetMapping("/all")

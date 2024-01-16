@@ -13,34 +13,34 @@ import lombok.NoArgsConstructor;
 public class Person {
 
     @JsonProperty("firstName")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String firstName;
 
     @JsonProperty("lastName")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String lastName;
 
     @JsonProperty("address")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String address;
 
     @JsonProperty("city")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String city;
 
     @JsonProperty("zip")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String zip;
 
     @JsonProperty("phone")
-    @JsonView(Views.Base.class)
+    @JsonView(Views.PersonBase.class)
     private String phone;
 
     @JsonProperty("email")
-    @JsonView(Views.WithEmail.class)
+    @JsonView(Views.PersonWithEmail.class)
     private String email;
 
     @JsonProperty("age")
-    @JsonView(Views.WithAge.class)
+    @JsonView(Views.PersonWithAge.class)
     private int age;
 }

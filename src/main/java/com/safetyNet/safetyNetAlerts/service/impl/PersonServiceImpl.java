@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +42,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public List<Person> findByCity(String city) {
+        return findAll().stream()
+                .filter(person -> person.getCity().equals(city))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ChildAlertDTO> findChildrenByAddress(String address) {
         List<ChildAlertDTO> listChildren = new ArrayList<>();
         List<Person> listPersonsAtAddress = findByAddress(address);
@@ -60,6 +69,18 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<Person> findAll() {
         return personRepository.findAll();
+    }
+
+    @Override
+    public Set<String> getCommunityEmails(String city) {
+        Set<String> communityEmails = new HashSet<>();
+        List<Person> personsByCity = findByCity(city);
+
+        for (Person person : personsByCity) {
+            communityEmails.add(person.getEmail());
+        }
+
+        return communityEmails;
     }
 
     @Override

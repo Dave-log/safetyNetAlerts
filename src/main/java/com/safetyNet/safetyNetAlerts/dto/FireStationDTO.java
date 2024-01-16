@@ -17,7 +17,7 @@ public class FireStationDTO {
     @JsonIgnore
     private EmergencyService emergencyService;
 
-    @JsonView(Views.WithAge.class)
+    @JsonView(Views.PersonWithAge.class)
     private final List<Person> personsCoveredByStation;
 
     private final int numberOfAdults;

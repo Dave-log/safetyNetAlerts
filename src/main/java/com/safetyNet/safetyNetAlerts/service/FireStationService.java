@@ -9,7 +9,7 @@ public interface FireStationService {
 
     FireStation findByStationNumber(Integer stationNumber);
 
-    FireStationDTO findPersonsCoveredByStation(Integer stationNumber);
+    List<Integer> findByAddress(String address);
 
     List<FireStation> findAll();
 

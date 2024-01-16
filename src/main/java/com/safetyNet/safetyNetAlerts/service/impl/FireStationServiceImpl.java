@@ -13,7 +13,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FireStationServiceImpl implements FireStationService {
@@ -36,13 +38,17 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public FireStationDTO findPersonsCoveredByStation(Integer stationNumber) {
-        List<Person> personsCoveredByStation = emergencyService.findPersonsCoveredByStation(stationNumber);
-        AgeGroupCount ageGroupCount = AgeGroupCounter.countAgeGroups(personsCoveredByStation);
-        int numberOfAdults = ageGroupCount.getAdults();
-        int numberOfChildren = ageGroupCount.getChildren();
+    public List<Integer> findByAddress(String address) {
+        List<Integer> fireStationNumberList = new ArrayList<>();
+        List<FireStation> fireStationList = fireStationRepository.findAll();
 
-        return new FireStationDTO(personsCoveredByStation, numberOfAdults, numberOfChildren);
+        for (FireStation fireStation : fireStationList) {
+            if (fireStation.getAddresses().contains(address)) {
+                fireStationNumberList.add(fireStation.getStationNumber());
+            }
+        }
+
+        return fireStationNumberList;
     }
 
     @Override
