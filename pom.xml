@@ -80,6 +80,7 @@
 					<excludes>
 						<exclude>**/model/*.class</exclude>
 						<exclude>**/dto/*.class</exclude>
+						<exclude>**/configuration/*.class</exclude>
 						<exclude>**/utils/LoggingHashMap.class</exclude>
 						<exclude>**/utils/JsonReader.class</exclude>
 						<exclude>**/SafetyNetAlertsApplication.class</exclude>

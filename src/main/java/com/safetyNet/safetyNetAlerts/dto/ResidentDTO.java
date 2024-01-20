@@ -32,13 +32,13 @@ public class ResidentDTO {
     @JsonView(Views.ResidentBase.class)
     private final List<String> allergies;
 
-    public ResidentDTO(Person person, MedicalRecord medicalRecord) {
+    public ResidentDTO(Person person) {
         this.name = person.getFirstName() + " " + person.getLastName();
         this.address = person.getAddress();
         this.phone = person.getPhone();
         this.age = person.getAge();
         this.email = person.getEmail();
-        this.medications = medicalRecord.getMedications();
-        this.allergies = medicalRecord.getAllergies();
+        this.medications = person.getMedicalRecord().getMedications();
+        this.allergies = person.getMedicalRecord().getAllergies();
     }
 }

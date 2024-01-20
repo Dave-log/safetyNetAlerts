@@ -1,6 +1,8 @@
 package com.safetyNet.safetyNetAlerts.service.impl;
 
 import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
+import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
+import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
@@ -36,16 +38,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> findByAddress(String address) {
-        return findAll().stream()
-                .filter(person -> person.getAddress().equals(address))
-                .collect(Collectors.toList());
+        return personRepository.findByAddress(address);
     }
 
     @Override
     public List<Person> findByCity(String city) {
-        return findAll().stream()
-                .filter(person -> person.getCity().equals(city))
-                .collect(Collectors.toList());
+        return personRepository.findByCity(city);
     }
 
     @Override
@@ -115,5 +113,12 @@ public class PersonServiceImpl implements PersonService {
         } else {
             logger.error("The person " + firstName + " " + lastName + " does not exist.");
         }
+    }
+
+    @Override
+    public ResidentDTO getPersonInfo(String firstName, String lastName) {
+        Person matchingPerson = personRepository.find(firstName, lastName);
+
+        return new ResidentDTO(matchingPerson);
     }
 }

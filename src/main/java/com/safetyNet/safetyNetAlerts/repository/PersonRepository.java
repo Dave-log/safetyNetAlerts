@@ -9,9 +9,11 @@ import java.util.Map;
 
 public interface PersonRepository {
 
-    Map<Pair<String, String>, Person> personMap = new HashMap<>();
-
     Person find(String firstName, String lastName);
+
+    List<Person> findByAddress(String address);
+
+    List<Person> findByCity(String city);
 
     List<Person> findAll();
 

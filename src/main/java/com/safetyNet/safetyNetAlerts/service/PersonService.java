@@ -1,6 +1,7 @@
 package com.safetyNet.safetyNetAlerts.service;
 
 import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
+import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
 import com.safetyNet.safetyNetAlerts.model.Person;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface PersonService {
     void update(Person person);
 
     void delete(String firstName, String lastName);
+
+    ResidentDTO getPersonInfo(String firstName, String lastName);
+
 }

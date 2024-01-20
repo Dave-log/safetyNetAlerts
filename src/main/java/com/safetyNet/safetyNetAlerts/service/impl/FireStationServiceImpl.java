@@ -6,7 +6,6 @@ import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.FireStationRepository;
 import com.safetyNet.safetyNetAlerts.service.AgeGroupCounter;
-import com.safetyNet.safetyNetAlerts.service.EmergencyService;
 import com.safetyNet.safetyNetAlerts.service.FireStationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FireStationServiceImpl implements FireStationService {
@@ -24,12 +22,9 @@ public class FireStationServiceImpl implements FireStationService {
 
     @Autowired
     private final FireStationRepository fireStationRepository;
-    @Autowired
-    private final EmergencyService emergencyService;
 
-    public FireStationServiceImpl(FireStationRepository fireStationRepository, EmergencyService emergencyService) {
+    public FireStationServiceImpl(FireStationRepository fireStationRepository) {
         this.fireStationRepository = fireStationRepository;
-        this.emergencyService = emergencyService;
     }
 
     @Override
@@ -81,4 +76,18 @@ public class FireStationServiceImpl implements FireStationService {
         fireStationRepository.deleteFireStation(stationNumber);
     }
 
+    @Override
+    public List<Person> findPersonsCoveredByStation(Integer stationNumber) {
+        return fireStationRepository.findPersonsCoveredByStation(stationNumber);
+    }
+
+    @Override
+    public FireStationDTO getPersonsCoveredByStationsSortedByAge(Integer stationNumber) {
+        List<Person> personsCoveredByStation = findPersonsCoveredByStation(stationNumber);
+        AgeGroupCount ageGroupCount = AgeGroupCounter.countAgeGroups(personsCoveredByStation);
+        int numberOfAdults = ageGroupCount.getAdults();
+        int numberOfChildren = ageGroupCount.getChildren();
+
+        return new FireStationDTO(personsCoveredByStation, numberOfAdults, numberOfChildren);
+    }
 }

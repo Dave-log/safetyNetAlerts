@@ -43,4 +43,13 @@ public class Person {
     @JsonProperty("age")
     @JsonView(Views.PersonWithAge.class)
     private int age;
+
+    @JsonProperty("medicalRecord")
+    private MedicalRecord medicalRecord;
+
+    public Person(String firstName, String lastName, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
 }

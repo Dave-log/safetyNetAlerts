@@ -29,7 +29,7 @@ public class FireService {
 
         for (Person resident : residentList) {
             MedicalRecord medicalRecord = medicalRecordService.find(resident.getFirstName(), resident.getLastName());
-            ResidentDTO residentDTO = new ResidentDTO(resident, medicalRecord);
+            ResidentDTO residentDTO = new ResidentDTO(resident);
 
             residentDTOList.add(residentDTO);
         }

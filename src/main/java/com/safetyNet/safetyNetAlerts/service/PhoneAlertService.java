@@ -11,11 +11,11 @@ import java.util.List;
 public class PhoneAlertService {
 
     @Autowired
-    private EmergencyService emergencyService;
+    private FireStationService fireStationService;
 
     public List<String> getPhoneAlert(Integer stationNumber) {
         List<String> phoneNumbers = new ArrayList<>();
-        List<Person> personsCoveredByStation = emergencyService.findPersonsCoveredByStation(stationNumber);
+        List<Person> personsCoveredByStation = fireStationService.findPersonsCoveredByStation(stationNumber);
 
         for (Person person : personsCoveredByStation) {
             phoneNumbers.add(person.getPhone());

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -23,6 +24,9 @@ public class FireStation {
 
     @JsonProperty("addresses")
     private Set<String> addresses;
+
+    @JsonProperty("personsCovered")
+    private List<Person> personsCovered;
 
     public FireStation(Integer stationNumber, Set<String> addresses) {
         this.stationNumber = stationNumber;

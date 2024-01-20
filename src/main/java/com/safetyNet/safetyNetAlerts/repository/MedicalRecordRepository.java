@@ -9,8 +9,6 @@ import java.util.Map;
 
 public interface MedicalRecordRepository {
 
-    Map<Pair<String, String>, MedicalRecord> medicalRecordMap = new HashMap<>();
-
     MedicalRecord find(String firstName, String lastName);
 
     List<MedicalRecord> findAll();
@@ -22,5 +20,4 @@ public interface MedicalRecordRepository {
     void update(MedicalRecord medicalRecord);
 
     void delete(MedicalRecord medicalRecord);
-
 }

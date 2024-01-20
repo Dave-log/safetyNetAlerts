@@ -1,6 +1,7 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.FireStation;
+import com.safetyNet.safetyNetAlerts.model.Person;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +10,11 @@ import java.util.Set;
 
 public interface FireStationRepository {
 
-    Map<Integer, Set<String>> fireStationMap = new HashMap<>();
-
     FireStation find(Integer StationNumber);
 
     List<FireStation> findAll();
+
+    List<Person> findPersonsCoveredByStation(Integer stationNumber);
 
     void save(FireStation fireStation);
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
-import com.safetyNet.safetyNetAlerts.service.EmergencyService;
 import com.safetyNet.safetyNetAlerts.service.FireStationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,20 +21,17 @@ public class FireStationController {
 
     @Autowired
     private final FireStationService fireStationService;
-    @Autowired
-    private final EmergencyService emergencyService;
 
 
-    public FireStationController(FireStationService fireStationService, EmergencyService emergencyService) {
+    public FireStationController(FireStationService fireStationService) {
         this.fireStationService = fireStationService;
-        this.emergencyService = emergencyService;
     }
 
     @GetMapping
     @ResponseBody
     @JsonView(Views.PersonWithAge.class)
     public FireStationDTO getPersonsCoveredByStation(@RequestParam Integer stationNumber) {
-        return emergencyService.getPersonsCoveredByStationsSortedByAge(stationNumber);
+        return fireStationService.getPersonsCoveredByStationsSortedByAge(stationNumber);
     }
 
     @GetMapping("/all")

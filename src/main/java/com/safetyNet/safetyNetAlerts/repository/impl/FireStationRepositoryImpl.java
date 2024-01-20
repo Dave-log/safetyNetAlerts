@@ -1,45 +1,59 @@
 package com.safetyNet.safetyNetAlerts.repository.impl;
 
+import com.safetyNet.safetyNetAlerts.exceptions.AddressNotFoundException;
+import com.safetyNet.safetyNetAlerts.exceptions.StationNotFoundException;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
+import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.FireStationRepository;
+import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class FireStationRepositoryImpl implements FireStationRepository {
 
     private final static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);
 
+    @Autowired
+    PersonRepository personRepository;
+
+    private final Map<Integer, FireStation> fireStationMap;
+
+    @Autowired
+    public FireStationRepositoryImpl(Map<Integer, FireStation> fireStationMap, PersonRepository personRepository) {
+        this.fireStationMap = fireStationMap;
+        this.personRepository = personRepository;
+    }
+
     public FireStation find(Integer stationNumber) {
-        Set<String> addresses = fireStationMap.get(stationNumber);
-        if (addresses != null) {
-            return new FireStation(stationNumber, addresses);
-        }
-        return null;
+        return fireStationMap.get(stationNumber);
     }
 
     @Override
     public List<FireStation> findAll() {
-        return fireStationMap.entrySet().stream()
-                .map(entry -> new FireStation(entry.getKey(), new HashSet<>(entry.getValue())))
-                .collect(Collectors.toList());
+        return new ArrayList<>(fireStationMap.values());
     }
 
     @Override
     public void save(FireStation fireStation) {
         Integer stationNumber = fireStation.getStationNumber();
-        String address = fireStation.getAddress();
 
         if (fireStationMap.containsKey(stationNumber)) {
-            fireStationMap.get(stationNumber).add(address);
+            FireStation existingFireStation = fireStationMap.get(stationNumber);
+
+            existingFireStation.getAddresses().add(fireStation.getAddress());
+            recordPersonsCoveredByStation(existingFireStation);
         } else {
-            Set<String> newAddresses = new HashSet<>();
-            newAddresses.add(address);
-            fireStationMap.put(stationNumber, newAddresses);
+            Set<String> addresses = new HashSet<>();
+            addresses.add(fireStation.getAddress());
+
+            fireStation.setAddresses(addresses);
+            fireStationMap.put(stationNumber, fireStation);
+            recordPersonsCoveredByStation(fireStation);
         }
     }
 
@@ -52,19 +66,34 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 
     @Override
     public void update(String address, Integer newStationNumber) {
-        fireStationMap.values().forEach(stationAddresses -> stationAddresses.remove(address));
-        fireStationMap.computeIfAbsent(newStationNumber, k -> new HashSet<>()).add(address);
+        // Remove the address from all existing fireStations except fireStation with newStationNumber as stationNumber
+        fireStationMap.values().stream()
+                .filter(station -> !station.getStationNumber().equals(newStationNumber))
+                .forEach(station -> station.getAddresses().remove(address));
+
+        if (fireStationMap.containsKey(newStationNumber)) {
+            fireStationMap.get(newStationNumber).getAddresses().add(address);
+        } else {
+            throw new StationNotFoundException(newStationNumber);
+        }
+
         logger.info("Firestation number has been updated for this address : " + address);
     }
 
     @Override
     public void deleteAddress(Integer stationNumber, String address) {
         if (fireStationMap.containsKey(stationNumber)) {
-            Set<String> addresses = fireStationMap.get(stationNumber);
-            addresses.remove(address);;
-            logger.info("Address : " + address + " has been removed from firestation n°" + stationNumber);
+            FireStation fireStation = fireStationMap.get(stationNumber);
+
+            if (fireStation.getAddresses().remove(address)) {
+                logger.info("Address : " + address + " has been removed from firestation n°" + stationNumber);
+            } else {
+                throw new AddressNotFoundException("Address: " + address + " not found in firestation n°" + stationNumber);
+            }
+
         } else {
-            logger.error("Firestation n°" + stationNumber + "does not exist.");
+            throw new StationNotFoundException(stationNumber);
+            //logger.error("Firestation n°" + stationNumber + "does not exist.");
         }
     }
 
@@ -74,7 +103,34 @@ public class FireStationRepositoryImpl implements FireStationRepository {
             fireStationMap.remove(stationNumber);
             logger.info("Firestation n°" + stationNumber + "has been deleted.");
         } else {
-            logger.error("Firestation n°" + stationNumber + "does not exist.");
+            throw new StationNotFoundException(stationNumber);
+            //logger.error("Firestation n°" + stationNumber + "does not exist.");
         }
+    }
+
+    private void recordPersonsCoveredByStation(FireStation fireStation) {
+        List<Person> personsCovered = new ArrayList<>();
+        Set<String> addresses = fireStation.getAddresses();
+
+        for (String address : addresses) {
+            List<Person> personsByAddress = personRepository.findByAddress(address);
+            personsCovered.addAll(personsByAddress);
+        }
+
+        fireStation.setPersonsCovered(personsCovered);
+    }
+
+    @Override
+    public List<Person> findPersonsCoveredByStation(Integer stationNumber) {
+        List<Person> personsCoveredByStation = new ArrayList<>();
+        Set<String> addressesCoveredByStation = find(stationNumber).getAddresses();
+
+        for (Person person : personRepository.findAll()) {
+            if (addressesCoveredByStation.contains(person.getAddress())) {
+                personsCoveredByStation.add(person);
+            }
+        }
+
+        return personsCoveredByStation;
     }
 }

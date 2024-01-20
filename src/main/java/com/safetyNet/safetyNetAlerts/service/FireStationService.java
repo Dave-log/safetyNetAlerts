@@ -2,6 +2,7 @@ package com.safetyNet.safetyNetAlerts.service;
 
 import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
+import com.safetyNet.safetyNetAlerts.model.Person;
 
 import java.util.List;
 
@@ -12,6 +13,10 @@ public interface FireStationService {
     List<Integer> findByAddress(String address);
 
     List<FireStation> findAll();
+
+    List<Person> findPersonsCoveredByStation(Integer stationNumber);
+
+    FireStationDTO getPersonsCoveredByStationsSortedByAge(Integer stationNumber);
 
     void create(FireStation fireStation);
 

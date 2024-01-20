@@ -19,19 +19,19 @@ public class FloodService {
     MedicalRecordService medicalRecordService;
 
     @Autowired
-    EmergencyService emergencyService;
+    FireStationService fireStationService;
 
     public FloodDTO getFloodInfoByStations(List<Integer> stationNumberList) {
         Map<String, List<ResidentDTO>> residentsByAddress = new HashMap<>();
 
         for (Integer stationNumber : stationNumberList) {
-            List<Person> personsCoveredByStation = emergencyService.findPersonsCoveredByStation(stationNumber);
+            List<Person> personsCoveredByStation = fireStationService.findPersonsCoveredByStation(stationNumber);
 
             for (Person person : personsCoveredByStation) {
                 String address = person.getAddress();
                 MedicalRecord medicalRecord = medicalRecordService.find(person.getFirstName(), person.getLastName());
 
-                ResidentDTO residentDTO = new ResidentDTO(person, medicalRecord);
+                ResidentDTO residentDTO = new ResidentDTO(person);
                 residentsByAddress.computeIfAbsent(address, k -> new ArrayList<>()).add(residentDTO);
             }
         }

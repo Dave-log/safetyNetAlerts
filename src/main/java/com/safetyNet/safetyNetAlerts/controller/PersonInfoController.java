@@ -3,7 +3,7 @@ package com.safetyNet.safetyNetAlerts.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
-import com.safetyNet.safetyNetAlerts.service.EmergencyService;
+import com.safetyNet.safetyNetAlerts.service.PersonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,11 @@ public class PersonInfoController {
     private static final Logger logger = LogManager.getLogger(PersonInfoController.class);
 
     @Autowired
-    EmergencyService emergencyService;
+    PersonService personService;
 
     @GetMapping
     @JsonView(Views.ResidentWithAddressAndEmail.class)
     public ResponseEntity<ResidentDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
-        return ResponseEntity.ok(emergencyService.getPersonInfo(firstName, lastName));
+        return ResponseEntity.ok(personService.getPersonInfo(firstName, lastName));
     }
 }
