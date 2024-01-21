@@ -84,7 +84,7 @@ public class PersonRepositoryImpl implements PersonRepository {
         personMap.remove(Pair.of(person.getFirstName(), person.getLastName()));
     }
 
-    private void attributeMedicalRecord(Person person) {
+    public void attributeMedicalRecord(Person person) {
         String firstName = person.getFirstName();
         String lastName = person.getLastName();
         MedicalRecord matchingMedicalRecord = medicalRecordRepository.find(firstName, lastName);
@@ -95,7 +95,7 @@ public class PersonRepositoryImpl implements PersonRepository {
         person.setMedicalRecord(matchingMedicalRecord);
     }
 
-    private void calculateAgeAndAssignToPerson(Person person) {
+    public void calculateAgeAndAssignToPerson(Person person) {
         String birthdate = person.getMedicalRecord().getBirthdate();
         person.setAge(AgeCalculator.calculate(birthdate));
     }

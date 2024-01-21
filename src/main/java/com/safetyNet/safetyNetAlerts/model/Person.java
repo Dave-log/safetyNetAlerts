@@ -52,4 +52,12 @@ public class Person {
         this.lastName = lastName;
         this.age = age;
     }
+
+    // for testing
+    public Person(String firstName, String lastName, String address, String city) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+    }
 }

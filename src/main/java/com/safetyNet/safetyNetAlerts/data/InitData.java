@@ -1,12 +1,12 @@
 package com.safetyNet.safetyNetAlerts.data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.impl.FireStationRepositoryImpl;
 import com.safetyNet.safetyNetAlerts.repository.impl.MedicalRecordRepositoryImpl;
 import com.safetyNet.safetyNetAlerts.repository.impl.PersonRepositoryImpl;
-import com.safetyNet.safetyNetAlerts.utils.JsonReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class InitData {
     @Bean
     public CommandLineRunner initDataFromJsonFile() {
         return args -> {
-            JsonReader jsonReader = new JsonReader();
+            JsonReader jsonReader = new JsonReader(new ObjectMapper());
             String jsonFilePath = "src/main/resources/data.json";
             try {
                 medicalRecordRepository.saveAll(jsonReader.readListFromFile(jsonFilePath, "medicalrecords", MedicalRecord.class));
