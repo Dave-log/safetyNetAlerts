@@ -6,10 +6,12 @@ import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.impl.PersonRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Pair;
 
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class PersonRepositoryTest {
 
     @InjectMocks
@@ -33,11 +35,6 @@ public class PersonRepositoryTest {
 
     @Mock
     private Map<Pair<String, String>, Person> mockPersonMap;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void testFind_PersonExists() {
@@ -69,7 +66,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void testFindAll() {
+    public void testFindAll_Success() {
         List<Person> mockPersonList = new ArrayList<>();
         mockPersonList.add(new Person("John", "Doe", 30));
         mockPersonList.add(new Person("Jane", "Doe", 32));
@@ -130,17 +127,20 @@ public class PersonRepositoryTest {
 
     @Test
     public void testSave_Success() {
+        String firstName = "John";
+        String lastName = "Doe";
+
         MedicalRecord medicalRecord = new MedicalRecord(
-                "John",
-                "Doe",
+                firstName,
+                lastName,
                 "10/27/1988",
                 Collections.emptyList(),
                 Collections.emptyList()
         );
 
         Person personToSave = new Person(
-                "John",
-                "Doe",
+                firstName,
+                lastName,
                 "1 Main St",
                 "Culver",
                 "77777",
@@ -149,37 +149,38 @@ public class PersonRepositoryTest {
                 0,
                 null);
 
-        when(medicalRecordRepository.find(personToSave.getFirstName(), personToSave.getLastName())).thenReturn(medicalRecord);
-        when(mockPersonMap.put(Pair.of(personToSave.getFirstName(), personToSave.getLastName()), personToSave))
-                .thenReturn(null);
+        when(medicalRecordRepository.find(firstName, lastName)).thenReturn(medicalRecord);
+        when(mockPersonMap.put(Pair.of(firstName, lastName), personToSave)).thenReturn(null);
 
         personRepository.save(personToSave);
 
-        verify(mockPersonMap).put(Pair.of(personToSave.getFirstName(), personToSave.getLastName()), personToSave);
+        verify(mockPersonMap).put(Pair.of(firstName, lastName), personToSave);
     }
 
     @Test
     public void testUpdate_Success() {
-        Person existingPerson = new Person("John", "Doe", 30);
+        String firstName = "John";
+        String lastName = "Doe";
+
+        Person existingPerson = new Person(firstName, lastName, 30);
         existingPerson.setAddress("old address");
         existingPerson.setCity("old city");
         existingPerson.setZip("old zip");
         existingPerson.setPhone("old phone");
         existingPerson.setEmail("old email");
 
-        Person updatedPerson = new Person("John", "Doe", 30);
+        Person updatedPerson = new Person(firstName, lastName, 30);
         updatedPerson.setAddress("new address");
         updatedPerson.setCity("new city");
         updatedPerson.setZip("new zip");
         updatedPerson.setPhone("new phone");
         updatedPerson.setEmail("new email");
 
-        when(mockPersonMap.get(Pair.of(updatedPerson.getFirstName(), updatedPerson.getLastName())))
-                .thenReturn(existingPerson);
+        when(mockPersonMap.get(Pair.of(firstName, lastName))).thenReturn(existingPerson);
 
         personRepository.update(updatedPerson);
 
-        verify(mockPersonMap).get(Pair.of(updatedPerson.getFirstName(), updatedPerson.getLastName()));
+        verify(mockPersonMap).get(Pair.of(firstName, lastName));
 
         assertEquals("new address", existingPerson.getAddress());
         assertEquals("new city", existingPerson.getCity());
@@ -190,21 +191,26 @@ public class PersonRepositoryTest {
 
     @Test
     public void testDelete_Success() {
-        Person personToDelete = new Person("John", "Doe", 30);
+        String firstName = "John";
+        String lastName = "Doe";
 
-        when(mockPersonMap.remove(Pair.of(personToDelete.getFirstName(), personToDelete.getLastName())))
-                .thenReturn(personToDelete);
+        Person personToDelete = new Person(firstName, lastName, 30);
+
+        when(mockPersonMap.remove(Pair.of(firstName, lastName))).thenReturn(personToDelete);
 
         personRepository.delete(personToDelete);
 
-        verify(mockPersonMap).remove(Pair.of(personToDelete.getFirstName(), personToDelete.getLastName()));
+        verify(mockPersonMap).remove(Pair.of(firstName, lastName));
     }
 
     @Test
     public void testAttributeMedicalRecord_MedicalRecordNotFound() {
-        Person person = new Person("John", "Doe", 30);
+        String firstName = "John";
+        String lastName = "Doe";
 
-        when(medicalRecordRepository.find(person.getFirstName(), person.getLastName())).thenReturn(null);
+        Person person = new Person(firstName, lastName, 30);
+
+        when(medicalRecordRepository.find(firstName, lastName)).thenReturn(null);
 
         assertThrows(MedicalRecordNotFoundException.class, () -> personRepository.attributeMedicalRecord(person));
     }

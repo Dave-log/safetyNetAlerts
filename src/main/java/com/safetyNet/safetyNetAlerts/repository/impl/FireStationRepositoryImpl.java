@@ -21,7 +21,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     @Autowired
     PersonRepository personRepository;
 
-    private final Map<Integer, FireStation> fireStationMap;
+    private Map<Integer, FireStation> fireStationMap;
 
     @Autowired
     public FireStationRepositoryImpl(Map<Integer, FireStation> fireStationMap, PersonRepository personRepository) {

@@ -28,4 +28,11 @@ public class MedicalRecord {
 
     @JsonProperty("allergies")
     private List<String> allergies;
+
+    // for testing
+    public MedicalRecord(String firstName, String lastName, String birthdate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+    }
 }

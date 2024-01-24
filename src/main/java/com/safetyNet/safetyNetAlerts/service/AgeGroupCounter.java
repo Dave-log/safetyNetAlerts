@@ -5,7 +5,9 @@ import com.safetyNet.safetyNetAlerts.model.Person;
 
 import java.util.List;
 
-public class AgeGroupCounter {
+public final class AgeGroupCounter {
+
+    private AgeGroupCounter() {}
 
     public static AgeGroupCount countAgeGroups(List<Person> listPersons) {
         int adults = 0;
