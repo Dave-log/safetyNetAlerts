@@ -5,32 +5,34 @@ import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class ResidentDTO {
 
     @JsonView(Views.ResidentBase.class)
-    private final String name;
+    private String name;
 
     @JsonView(Views.ResidentWithAddressAndEmail.class)
-    private final String address;
+    private String address;
 
     @JsonView(Views.ResidentWithPhone.class)
-    private final String phone;
+    private String phone;
 
     @JsonView(Views.ResidentBase.class)
-    private final int age;
+    private int age;
 
     @JsonView(Views.ResidentWithEmail.class)
-    private final String email;
+    private String email;
 
     @JsonView(Views.ResidentBase.class)
-    private final List<String> medications;
+    private List<String> medications;
 
     @JsonView(Views.ResidentBase.class)
-    private final List<String> allergies;
+    private List<String> allergies;
 
     public ResidentDTO(Person person) {
         this.name = person.getFirstName() + " " + person.getLastName();
@@ -38,7 +40,7 @@ public class ResidentDTO {
         this.phone = person.getPhone();
         this.age = person.getAge();
         this.email = person.getEmail();
-        this.medications = person.getMedicalRecord().getMedications();
-        this.allergies = person.getMedicalRecord().getAllergies();
+        this.medications = person.getMedicalRecord() != null ? person.getMedicalRecord().getMedications() : null;
+        this.allergies = person.getMedicalRecord() != null ? person.getMedicalRecord().getAllergies() : null;
     }
 }

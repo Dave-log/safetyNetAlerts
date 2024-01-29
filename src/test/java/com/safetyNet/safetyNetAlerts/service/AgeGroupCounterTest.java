@@ -24,8 +24,8 @@ public class AgeGroupCounterTest {
     @Test
     public void testCountAgeGroups_NoChild() {
         List<Person> adultList = new ArrayList<>();
-        adultList.add(new Person("John", "Doe", 30));
-        adultList.add(new Person("Jane", "Doe", 32));
+        adultList.add(Person.builder().firstName("John").lastName("Doe").age(30).build());
+        adultList.add(Person.builder().firstName("Jane").lastName("Doe").age(32).build());
 
         AgeGroupCount result = AgeGroupCounter.countAgeGroups(adultList);
 
@@ -36,8 +36,8 @@ public class AgeGroupCounterTest {
     @Test
     public void testCountAgeGroups_NoAdult() {
         List<Person> childList = new ArrayList<>();
-        childList.add(new Person("John", "Doe", 10));
-        childList.add(new Person("Jane", "Doe", 8));
+        childList.add(Person.builder().firstName("John").lastName("Doe").age(10).build());
+        childList.add(Person.builder().firstName("Jane").lastName("Doe").age(8).build());
 
         AgeGroupCount result = AgeGroupCounter.countAgeGroups(childList);
 
@@ -48,9 +48,9 @@ public class AgeGroupCounterTest {
     @Test
     public void testCountAgeGroups_MixedAgeGroups() {
         List<Person> personList = new ArrayList<>();
-        personList.add(new Person("John", "Doe", 30));
-        personList.add(new Person("Jane", "Doe", 32));
-        personList.add(new Person("Jack", "Doe", 8));
+        personList.add(Person.builder().firstName("John").lastName("Doe").age(30).build());
+        personList.add(Person.builder().firstName("Jane").lastName("Doe").age(32).build());
+        personList.add(Person.builder().firstName("Jack").lastName("Doe").age(8).build());
 
         AgeGroupCount result = AgeGroupCounter.countAgeGroups(personList);
 

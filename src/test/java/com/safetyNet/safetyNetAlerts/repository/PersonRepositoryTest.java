@@ -68,8 +68,8 @@ public class PersonRepositoryTest {
     @Test
     public void testFindAll_Success() {
         List<Person> mockPersonList = new ArrayList<>();
-        mockPersonList.add(new Person("John", "Doe", 30));
-        mockPersonList.add(new Person("Jane", "Doe", 32));
+        mockPersonList.add(Person.builder().firstName("John").lastName("Doe").age(30).build());
+        mockPersonList.add(Person.builder().firstName("Jane").lastName("DOe").age(32).build());
 
         when(mockPersonMap.values()).thenReturn(mockPersonList);
 
@@ -92,9 +92,9 @@ public class PersonRepositoryTest {
     @Test
     public void testFindByAddress_Success() {
         String targetAddress = "1 Main St";
-        Person person1 = new Person("John", "Doe", targetAddress, "Culver");
-        Person person2 = new Person("Jane", "Doe", targetAddress, "Culver");
-        Person person3 = new Person("Bob", "Smith", "31 Oak St", "Culver");
+        Person person1 = Person.builder().firstName("John").lastName("DOe").address(targetAddress).build();
+        Person person2 = Person.builder().firstName("Jane").lastName("DOe").address(targetAddress).build();
+        Person person3 = Person.builder().firstName("Bob").lastName("Smith").address("31 Oak St").build();
 
         when(mockPersonMap.values()).thenReturn(List.of(person1, person2, person3));
 
@@ -110,9 +110,9 @@ public class PersonRepositoryTest {
     @Test
     public void testFindByCity_Success() {
         String targetCity = "Culver";
-        Person person1 = new Person("John", "Doe", "1 Main St", "Culver");
-        Person person2 = new Person("Jane", "Doe", "1 Main St", "Culver");
-        Person person3 = new Person("Bob", "Smith", "1 Main St", "Boston");
+        Person person1 = Person.builder().lastName("John").lastName("Doe").city(targetCity).build();
+        Person person2 = Person.builder().lastName("Jane").lastName("Doe").city(targetCity).build();
+        Person person3 = Person.builder().lastName("Bob").lastName("Smith").city("Boston").build();
 
         when(mockPersonMap.values()).thenReturn(List.of(person1, person2, person3));
 
@@ -162,14 +162,14 @@ public class PersonRepositoryTest {
         String firstName = "John";
         String lastName = "Doe";
 
-        Person existingPerson = new Person(firstName, lastName, 30);
+        Person existingPerson = Person.builder().firstName(firstName).lastName(lastName).age(30).build();
         existingPerson.setAddress("old address");
         existingPerson.setCity("old city");
         existingPerson.setZip("old zip");
         existingPerson.setPhone("old phone");
         existingPerson.setEmail("old email");
 
-        Person updatedPerson = new Person(firstName, lastName, 30);
+        Person updatedPerson = Person.builder().firstName(firstName).lastName(lastName).age(30).build();
         updatedPerson.setAddress("new address");
         updatedPerson.setCity("new city");
         updatedPerson.setZip("new zip");
@@ -194,7 +194,7 @@ public class PersonRepositoryTest {
         String firstName = "John";
         String lastName = "Doe";
 
-        Person personToDelete = new Person(firstName, lastName, 30);
+        Person personToDelete = Person.builder().firstName(firstName).lastName(lastName).age(30).build();
 
         when(mockPersonMap.remove(Pair.of(firstName, lastName))).thenReturn(personToDelete);
 
@@ -208,7 +208,7 @@ public class PersonRepositoryTest {
         String firstName = "John";
         String lastName = "Doe";
 
-        Person person = new Person(firstName, lastName, 30);
+        Person person = Person.builder().firstName(firstName).lastName(lastName).age(30).build();
 
         when(medicalRecordRepository.find(firstName, lastName)).thenReturn(null);
 

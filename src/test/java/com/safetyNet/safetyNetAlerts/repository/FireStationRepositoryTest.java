@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockFilterChain;
 
 import java.util.*;
 
@@ -31,7 +32,7 @@ public class FireStationRepositoryTest {
 
     @Test
     public void testFind_FireStationExists() {
-        FireStation mockFireStation = new FireStation(0, Collections.emptySet());
+        FireStation mockFireStation = FireStation.builder().stationNumber(0).addresses(Collections.emptySet()).build();
 
         when(mockFireStationMap.get(any())).thenReturn(mockFireStation);
 
@@ -51,8 +52,8 @@ public class FireStationRepositoryTest {
     @Test
     public void testFindAll_Success() {
         List<FireStation> mockFireStationList = new ArrayList<>();
-        mockFireStationList.add(new FireStation(5, Collections.emptySet()));
-        mockFireStationList.add(new FireStation(6, Collections.emptySet()));
+        mockFireStationList.add(FireStation.builder().stationNumber(5).addresses(Collections.emptySet()).build());
+        mockFireStationList.add(FireStation.builder().stationNumber(6).addresses(Collections.emptySet()).build());
 
         when(mockFireStationMap.values()).thenReturn(mockFireStationList);
 
@@ -76,7 +77,7 @@ public class FireStationRepositoryTest {
     public void testSave_Success() {
         Integer stationNumber = 0;
 
-        FireStation fireStationToSave = new FireStation(stationNumber, Collections.emptySet());
+        FireStation fireStationToSave = FireStation.builder().stationNumber(stationNumber).addresses(Collections.emptySet()).build();
 
         when(mockFireStationMap.put(stationNumber, fireStationToSave)).thenReturn(null);
 
@@ -90,14 +91,23 @@ public class FireStationRepositoryTest {
         Integer newStationNumber = 5;
         String address = "1 Main St";
 
-        FireStation existingStation = new FireStation(1, new HashSet<>(Set.of(address)));
+        FireStation existingStation1 = FireStation.builder().stationNumber(1).addresses(new HashSet<>(Set.of(address))).build();
+        FireStation existingStation2 = FireStation.builder().stationNumber(2).addresses(new HashSet<>(Set.of(address))).build();
+        FireStation existingStation3 = FireStation.builder().stationNumber(newStationNumber).addresses(new HashSet<>(Set.of("2 Second St"))).build();
 
+        mockFireStationMap.put(1, existingStation1);
+        mockFireStationMap.put(2, existingStation2);
+        mockFireStationMap.put(3, existingStation3);
+
+        when(mockFireStationMap.values()).thenReturn(List.of(existingStation1, existingStation2, existingStation3));
+        when(mockFireStationMap.get(newStationNumber)).thenReturn(existingStation3);
         when(mockFireStationMap.containsKey(newStationNumber)).thenReturn(true);
-        when(mockFireStationMap.get(newStationNumber)).thenReturn(existingStation);
 
         fireStationRepository.update(address, newStationNumber);
 
-        assertTrue(mockFireStationMap.get(newStationNumber).getAddresses().contains(address));
+        assertFalse(existingStation1.getAddresses().contains(address));
+        assertFalse(existingStation2.getAddresses().contains(address));
+        assertTrue(existingStation3.getAddresses().contains(address));
     }
 
     @Test
@@ -115,7 +125,7 @@ public class FireStationRepositoryTest {
         Integer stationNumber = 0;
         String addressToRemove = "1 Main St";
 
-        FireStation fireStation = new FireStation(stationNumber, new HashSet<>(Set.of(addressToRemove)));
+        FireStation fireStation = FireStation.builder().stationNumber(stationNumber).addresses(new HashSet<>(Set.of(addressToRemove))).build();
 
         when(mockFireStationMap.containsKey(stationNumber)).thenReturn(true);
         when(mockFireStationMap.get(stationNumber)).thenReturn(fireStation);
@@ -140,7 +150,7 @@ public class FireStationRepositoryTest {
         Integer stationNumber = 0;
         String addressToRemove = "1 Main St";
 
-        FireStation fireStation = new FireStation(stationNumber, new HashSet<>(Set.of("2 Second St")));
+        FireStation fireStation = FireStation.builder().stationNumber(stationNumber).addresses(new HashSet<>(Set.of("2 Second St"))).build();
 
         when(mockFireStationMap.containsKey(stationNumber)).thenReturn(true);
         when(mockFireStationMap.get(stationNumber)).thenReturn(fireStation);
@@ -176,11 +186,11 @@ public class FireStationRepositoryTest {
         Integer stationNumber = 0;
 
         List<Person> allPersons = new ArrayList<>();
-        allPersons.add(new Person("John", "Doe", "1 Main St", "Culver"));
-        allPersons.add(new Person("Jane", "Doe", "2 Second St", "Culver"));
+        allPersons.add(Person.builder().firstName("John").lastName("Doe").address("1 Main St").city("Culver").build());
+        allPersons.add(Person.builder().firstName("Jane").lastName("Doe").address("2 Second St").city("Culver").build());
 
         Set<String> addressesCoveredByStation = new HashSet<>(Set.of("1 Main St"));
-        FireStation mockFireStation = new FireStation(stationNumber, addressesCoveredByStation);
+        FireStation mockFireStation = FireStation.builder().stationNumber(stationNumber).addresses(addressesCoveredByStation).build();
 
         when(fireStationRepository.find(stationNumber)).thenReturn(mockFireStation);
         when(personRepository.findAll()).thenReturn(allPersons);

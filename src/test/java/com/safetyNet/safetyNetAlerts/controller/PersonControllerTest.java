@@ -32,14 +32,14 @@ public class PersonControllerTest {
     private PersonController personController;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper mapper;
 
     @Test
     public void testFind() throws Exception {
         String firstName = "John";
         String lastName = "Doe";
 
-        Person mockPerson = new Person(firstName, lastName, 30);
+        Person mockPerson = Person.builder().firstName(firstName).lastName(lastName).age(30).build();
 
         when(mockPersonService.findByFullName(anyString(), anyString())).thenReturn(mockPerson);
 
@@ -55,8 +55,8 @@ public class PersonControllerTest {
     @Test
     public void testFindAll() throws Exception {
         List<Person> mockPersonList = Arrays.asList(
-                new Person("John", "Doe", 30),
-                new Person("Jane", "Doe", 32)
+                Person.builder().firstName("John").lastName("Doe").age(30).build(),
+                Person.builder().firstName("Jane").lastName("Doe").age(32).build()
         );
 
         when(mockPersonService.findAll()).thenReturn(mockPersonList);
@@ -73,8 +73,8 @@ public class PersonControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        Person newMockPerson = new Person("John", "Doe", 30);
-        String newMockPersonToJson = objectMapper.writeValueAsString(newMockPerson);
+        Person newMockPerson = Person.builder().firstName("John").lastName("Doe").age(30).build();
+        String newMockPersonToJson = mapper.writeValueAsString(newMockPerson);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/person")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,9 +85,25 @@ public class PersonControllerTest {
     }
 
     @Test
+    public void testCreates() throws Exception {
+        List<Person> newMockPersonList = Arrays.asList(
+                Person.builder().firstName("John").lastName("Doe").age(30).build(),
+                Person.builder().firstName("Jane").lastName("Doe").age(32).build()
+        );
+        String newMockPersonListToJson = mapper.writeValueAsString(newMockPersonList);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/person/list")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newMockPersonListToJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(mockPersonService).creates(newMockPersonList);
+    }
+
+    @Test
     public void testUpdate() throws Exception {
-        Person updatedMockPerson = new Person("John", "Doe", 30);
-        String updatedMockPersonToJson = objectMapper.writeValueAsString(updatedMockPerson);
+        Person updatedMockPerson = Person.builder().firstName("John").lastName("Doe").age(30).build();
+        String updatedMockPersonToJson = mapper.writeValueAsString(updatedMockPerson);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/person")
                 .contentType(MediaType.APPLICATION_JSON)

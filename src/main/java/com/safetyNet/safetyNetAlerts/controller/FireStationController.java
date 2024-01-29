@@ -28,8 +28,8 @@ public class FireStationController {
     }
 
     @GetMapping
-    @ResponseBody
-    @JsonView(Views.PersonWithAge.class)
+    //@ResponseBody
+    //@JsonView(Views.PersonWithAge.class)
     public FireStationDTO getPersonsCoveredByStation(@RequestParam Integer stationNumber) {
         return fireStationService.getPersonsCoveredByStationsSortedByAge(stationNumber);
     }

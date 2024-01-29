@@ -19,19 +19,13 @@ public class FireService {
     @Autowired
     private FireStationService fireStationService;
 
-    @Autowired
-    private MedicalRecordService medicalRecordService;
-
     public FireDTO getFireInfo(String address) {
         List<Person> residentList = personService.findByAddress(address);
         List<Integer> fireStationNumbers = fireStationService.findByAddress(address);
         List<ResidentDTO> residentDTOList = new ArrayList<>();
 
         for (Person resident : residentList) {
-            MedicalRecord medicalRecord = medicalRecordService.find(resident.getFirstName(), resident.getLastName());
-            ResidentDTO residentDTO = new ResidentDTO(resident);
-
-            residentDTOList.add(residentDTO);
+            residentDTOList.add(new ResidentDTO(resident));
         }
 
         return new FireDTO(fireStationNumbers, residentDTOList);

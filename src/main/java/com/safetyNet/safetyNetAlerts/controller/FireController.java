@@ -24,7 +24,7 @@ public class FireController {
 
     @GetMapping
     @JsonView(Views.ResidentWithPhone.class)
-    public ResponseEntity<FireDTO> getFireInfo(@RequestParam String address) {
-        return ResponseEntity.ok(fireService.getFireInfo(address));
+    public FireDTO getFireInfo(@RequestParam String address) {
+        return fireService.getFireInfo(address);
     }
 }

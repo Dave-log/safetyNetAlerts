@@ -3,12 +3,14 @@ package com.safetyNet.safetyNetAlerts.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -28,11 +30,4 @@ public class MedicalRecord {
 
     @JsonProperty("allergies")
     private List<String> allergies;
-
-    // for testing
-    public MedicalRecord(String firstName, String lastName, String birthdate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthdate = birthdate;
-    }
 }

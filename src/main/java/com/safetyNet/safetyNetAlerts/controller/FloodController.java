@@ -26,8 +26,8 @@ public class FloodController {
 
     @GetMapping("/stations")
     @JsonView(Views.ResidentWithPhone.class)
-    public ResponseEntity<FloodDTO> getFloodInfo(@RequestParam List<Integer> stations) {
-        return ResponseEntity.ok(floodService.getFloodInfoByStations(stations));
+    public FloodDTO getFloodInfo(@RequestParam List<Integer> stations) {
+        return floodService.getFloodInfoByStations(stations);
     }
 
 }

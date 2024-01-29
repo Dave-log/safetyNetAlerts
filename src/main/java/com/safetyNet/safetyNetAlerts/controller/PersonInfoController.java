@@ -26,7 +26,7 @@ public class PersonInfoController {
 
     @GetMapping
     @JsonView(Views.ResidentWithAddressAndEmail.class)
-    public ResponseEntity<ResidentDTO> getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
-        return ResponseEntity.ok(personService.getPersonInfo(firstName, lastName));
+    public ResidentDTO getPersonInfo(@RequestParam String firstName, @RequestParam String lastName) {
+        return personService.getPersonInfo(firstName, lastName);
     }
 }

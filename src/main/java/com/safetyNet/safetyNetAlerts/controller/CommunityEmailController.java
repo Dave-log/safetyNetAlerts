@@ -23,7 +23,7 @@ public class CommunityEmailController {
     PersonService personService;
 
     @GetMapping
-    public ResponseEntity<Set<String>> getCommunityEmails(@RequestParam String city) {
-        return ResponseEntity.ok(personService.getCommunityEmails(city));
+    public Set<String> getCommunityEmails(@RequestParam String city) {
+        return personService.getCommunityEmails(city);
     }
 }

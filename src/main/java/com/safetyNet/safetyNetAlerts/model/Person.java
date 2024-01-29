@@ -3,10 +3,12 @@ package com.safetyNet.safetyNetAlerts.model;
 import com.fasterxml.jackson.annotation.*;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -46,18 +48,4 @@ public class Person {
 
     @JsonProperty("medicalRecord")
     private MedicalRecord medicalRecord;
-
-    public Person(String firstName, String lastName, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
-    // for testing
-    public Person(String firstName, String lastName, String address, String city) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-    }
 }

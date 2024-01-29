@@ -55,8 +55,8 @@ public class MedicalRecordRepositoryTest {
     @Test
     public void testFindAll_Success() {
         List<MedicalRecord> mockMedicalRecordList = new ArrayList<>();
-        mockMedicalRecordList.add(new MedicalRecord("John", "Doe", "01/01/1900"));
-        mockMedicalRecordList.add(new MedicalRecord("Jane", "Doe", "01/01/1905"));
+        mockMedicalRecordList.add(MedicalRecord.builder().firstName("John").lastName("Doe").birthdate("01/01/1900").build());
+        mockMedicalRecordList.add(MedicalRecord.builder().firstName("Jane").lastName("Doe").birthdate("01/01/1905").build());
 
         when(mockMedicalRecordMap.values()).thenReturn(mockMedicalRecordList);
 
@@ -133,7 +133,7 @@ public class MedicalRecordRepositoryTest {
         String firstName = "John";
         String lastName = "Doe";
 
-        MedicalRecord medicalRecordToDelete = new MedicalRecord(firstName, lastName, "01/01/1900");
+        MedicalRecord medicalRecordToDelete = MedicalRecord.builder().firstName(firstName).lastName(lastName).birthdate("01/01/1900").build();
 
         when(mockMedicalRecordMap.remove(Pair.of(firstName, lastName))).thenReturn(medicalRecordToDelete);
 

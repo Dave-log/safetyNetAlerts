@@ -93,7 +93,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void update(Person person) {
-
         Person optionalPerson = findByFullName(person.getFirstName(), person.getLastName());
         if (optionalPerson != null) {
             personRepository.update(person);
@@ -105,7 +104,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void delete(String firstName, String lastName) {
-
         Person optionalPerson = findByFullName(firstName, lastName);
         if (optionalPerson != null) {
             personRepository.delete(optionalPerson);
@@ -118,7 +116,15 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ResidentDTO getPersonInfo(String firstName, String lastName) {
         Person matchingPerson = personRepository.find(firstName, lastName);
+        ResidentDTO residentDTO;
 
-        return new ResidentDTO(matchingPerson);
+        if (matchingPerson != null) {
+            residentDTO =  new ResidentDTO(personRepository.find(firstName, lastName));
+        } else {
+            logger.error("The person " + firstName + " " + lastName + " does not exist.");
+            residentDTO = new ResidentDTO();
+        }
+
+        return residentDTO;
     }
 }

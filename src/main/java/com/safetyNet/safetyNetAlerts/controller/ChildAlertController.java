@@ -12,23 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/childAlert")
-public class ChildrenAlertController {
+public class ChildAlertController {
 
-    private static final Logger logger = LogManager.getLogger(ChildrenAlertController.class);
+    private static final Logger logger = LogManager.getLogger(ChildAlertController.class);
 
     @Autowired
     private final PersonService personService;
 
-    public ChildrenAlertController(PersonService personService) {
+    public ChildAlertController(PersonService personService) {
         this.personService = personService;
     }
 
     @GetMapping
-    public ResponseEntity<List<ChildAlertDTO>> getChildrenAlert(@RequestParam String address) {
-        List<ChildAlertDTO> listChildrenAlert = personService.findChildrenByAddress(address);
-        if (listChildrenAlert.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(listChildrenAlert);
+    public List<ChildAlertDTO> getChildAlert(@RequestParam String address) {
+        return personService.findChildrenByAddress(address);
     }
 }

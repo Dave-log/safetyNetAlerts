@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public class FireStationDTO {
 
-    @JsonView(Views.PersonWithAge.class)
+    //@JsonView(Views.PersonWithAge.class)
     private final List<Person> personsCoveredByStation;
 
     private final int numberOfAdults;

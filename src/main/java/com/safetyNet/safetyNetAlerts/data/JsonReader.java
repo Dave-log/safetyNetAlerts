@@ -18,8 +18,4 @@ public class JsonReader {
         JsonNode targetNode = rootNode.path(node);
         return mapper.readValue(targetNode.traverse(), mapper.getTypeFactory().constructCollectionType(List.class, valueType));
     }
-
-    public <T> void writeListToFile(String filePath, List<T> data) throws Exception {
-        mapper.writeValue(new File(filePath), data);
-    }
 }

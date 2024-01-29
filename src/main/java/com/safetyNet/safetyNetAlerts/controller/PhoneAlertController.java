@@ -22,7 +22,7 @@ public class PhoneAlertController {
     private PhoneAlertService phoneAlertService;
 
     @GetMapping
-    public ResponseEntity<List<String>> getPhoneAlert(@RequestParam Integer stationNumber) {
-        return ResponseEntity.ok(phoneAlertService.getPhoneAlert(stationNumber));
+    public List<String> getPhoneAlert(@RequestParam Integer stationNumber) {
+        return phoneAlertService.getPhoneAlert(stationNumber);
     }
 }
