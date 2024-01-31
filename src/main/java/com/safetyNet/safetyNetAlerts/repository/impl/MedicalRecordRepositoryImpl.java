@@ -9,14 +9,13 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
 
-    private final static Logger logger = LogManager.getLogger(MedicalRecordRepositoryImpl.class);
+    private static final Logger logger = LogManager.getLogger(MedicalRecordRepositoryImpl.class);
 
     private final Map<Pair<String, String>, MedicalRecord> medicalRecordMap;
 
@@ -49,9 +48,13 @@ public class MedicalRecordRepositoryImpl implements MedicalRecordRepository {
     @Override
     public void update(MedicalRecord medicalRecord) {
         MedicalRecord medicalRecordToUpdate = find(medicalRecord.getFirstName(), medicalRecord.getLastName());
-        medicalRecordToUpdate.setBirthdate(medicalRecord.getBirthdate());
-        medicalRecordToUpdate.setMedications(medicalRecord.getMedications());
-        medicalRecordToUpdate.setAllergies(medicalRecord.getAllergies());
+        if (medicalRecordToUpdate != null) {
+            medicalRecordToUpdate.setBirthdate(medicalRecord.getBirthdate());
+            medicalRecordToUpdate.setMedications(medicalRecord.getMedications());
+            medicalRecordToUpdate.setAllergies(medicalRecord.getAllergies());
+        } else {
+            logger.error("Medical record of " + medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " does not exist.");
+        }
     }
 
     @Override

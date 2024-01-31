@@ -2,7 +2,6 @@ package com.safetyNet.safetyNetAlerts.service.impl;
 
 import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
 import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
-import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {

@@ -21,7 +21,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     @Autowired
     PersonRepository personRepository;
 
-    private Map<Integer, FireStation> fireStationMap;
+    private final Map<Integer, FireStation> fireStationMap;
 
     @Autowired
     public FireStationRepositoryImpl(Map<Integer, FireStation> fireStationMap, PersonRepository personRepository) {
@@ -88,12 +88,11 @@ public class FireStationRepositoryImpl implements FireStationRepository {
             if (fireStation.getAddresses().remove(address)) {
                 logger.info("Address : " + address + " has been removed from firestation n°" + stationNumber);
             } else {
-                throw new AddressNotFoundException("Address: " + address + " not found in firestation n°" + stationNumber);
+                logger.error("Address: " + address + " not found in firestation n°" + stationNumber);
             }
 
         } else {
-            throw new StationNotFoundException(stationNumber);
-            //logger.error("Firestation n°" + stationNumber + "does not exist.");
+            logger.error("Firestation n°" + stationNumber + "does not exist.");
         }
     }
 
@@ -103,8 +102,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
             fireStationMap.remove(stationNumber);
             logger.info("Firestation n°" + stationNumber + "has been deleted.");
         } else {
-            throw new StationNotFoundException(stationNumber);
-            //logger.error("Firestation n°" + stationNumber + "does not exist.");
+            logger.error("Firestation n°" + stationNumber + "does not exist.");
         }
     }
 

@@ -41,7 +41,7 @@ public class JsonReaderTest {
         String node = "data";
         Class<PersonModelForTesting> valueType = PersonModelForTesting.class;
 
-        Throwable exception = assertThrows(Exception.class, () ->
+        assertThrows(Exception.class, () ->
                 jsonReader.readListFromFile(filePath, node, valueType));
     }
 }
