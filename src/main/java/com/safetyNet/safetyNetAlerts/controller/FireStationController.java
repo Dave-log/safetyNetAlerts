@@ -1,12 +1,8 @@
 package com.safetyNet.safetyNetAlerts.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.dto.FireStationDTO;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.service.FireStationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +13,6 @@ import java.util.List;
 @RequestMapping("/firestation")
 public class FireStationController {
 
-    private static final Logger logger = LogManager.getLogger(FireStationController.class);
-
     @Autowired
     private final FireStationService fireStationService;
 
@@ -28,8 +22,6 @@ public class FireStationController {
     }
 
     @GetMapping
-    //@ResponseBody
-    //@JsonView(Views.PersonWithAge.class)
     public FireStationDTO getPersonsCoveredByStation(@RequestParam Integer stationNumber) {
         return fireStationService.getPersonsCoveredByStationsSortedByAge(stationNumber);
     }

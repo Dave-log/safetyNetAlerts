@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/person")
 public class PersonController {
-
-    private static final Logger logger = LogManager.getLogger(PersonController.class);
 
     @Autowired
     private final PersonService personService;

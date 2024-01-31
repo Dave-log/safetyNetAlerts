@@ -1,7 +1,6 @@
 package com.safetyNet.safetyNetAlerts.repository.impl;
 
 import com.safetyNet.safetyNetAlerts.exceptions.MedicalRecordNotFoundException;
-import com.safetyNet.safetyNetAlerts.exceptions.PersonNotFoundException;
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.MedicalRecordRepository;
@@ -18,6 +17,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class PersonRepositoryImpl implements PersonRepository {
+
+    private static final Logger logger = LogManager.getLogger(PersonRepositoryImpl.class);
 
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
@@ -71,15 +72,11 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public void update(Person person) {
         Person personToUpdate = find(person.getFirstName(), person.getLastName());
-        if (personToUpdate != null) {
-            personToUpdate.setAddress(person.getAddress());
-            personToUpdate.setCity(person.getCity());
-            personToUpdate.setZip(person.getZip());
-            personToUpdate.setPhone(person.getPhone());
-            personToUpdate.setEmail(person.getEmail());
-        } else {
-            throw new PersonNotFoundException(person.getFirstName(), person.getLastName());
-        }
+        personToUpdate.setAddress(person.getAddress());
+        personToUpdate.setCity(person.getCity());
+        personToUpdate.setZip(person.getZip());
+        personToUpdate.setPhone(person.getPhone());
+        personToUpdate.setEmail(person.getEmail());
     }
 
     @Override
