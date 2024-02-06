@@ -68,18 +68,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Set<String> getCommunityEmails(String city) {
-        Set<String> communityEmails = new HashSet<>();
-        List<Person> personsByCity = findByCity(city);
-
-        for (Person person : personsByCity) {
-            communityEmails.add(person.getEmail());
-        }
-
-        return communityEmails;
-    }
-
-    @Override
     public void create(Person person) {
         personRepository.save(person);
     }
@@ -109,20 +97,5 @@ public class PersonServiceImpl implements PersonService {
         } else {
             logger.error("The person " + firstName + " " + lastName + " does not exist.");
         }
-    }
-
-    @Override
-    public ResidentDTO getPersonInfo(String firstName, String lastName) {
-        Person matchingPerson = personRepository.find(firstName, lastName);
-        ResidentDTO residentDTO;
-
-        if (matchingPerson != null) {
-            residentDTO =  new ResidentDTO(personRepository.find(firstName, lastName));
-        } else {
-            logger.error("The person " + firstName + " " + lastName + " does not exist.");
-            residentDTO = new ResidentDTO();
-        }
-
-        return residentDTO;
     }
 }

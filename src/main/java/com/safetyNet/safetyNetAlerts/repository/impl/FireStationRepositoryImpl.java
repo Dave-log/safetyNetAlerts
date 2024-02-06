@@ -18,9 +18,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
 
     private final static Logger logger = LogManager.getLogger(FireStationRepositoryImpl.class);
 
-    @Autowired
-    PersonRepository personRepository;
-
+    private final PersonRepository personRepository;
     private final Map<Integer, FireStation> fireStationMap;
 
     @Autowired
@@ -46,14 +44,12 @@ public class FireStationRepositoryImpl implements FireStationRepository {
             FireStation existingFireStation = fireStationMap.get(stationNumber);
 
             existingFireStation.getAddresses().add(fireStation.getAddress());
-            recordPersonsCoveredByStation(existingFireStation);
         } else {
             Set<String> addresses = new HashSet<>();
             addresses.add(fireStation.getAddress());
 
             fireStation.setAddresses(addresses);
             fireStationMap.put(stationNumber, fireStation);
-            recordPersonsCoveredByStation(fireStation);
         }
     }
 
@@ -104,18 +100,6 @@ public class FireStationRepositoryImpl implements FireStationRepository {
         } else {
             logger.error("Firestation n°" + stationNumber + "does not exist.");
         }
-    }
-
-    private void recordPersonsCoveredByStation(FireStation fireStation) {
-        List<Person> personsCovered = new ArrayList<>();
-        Set<String> addresses = fireStation.getAddresses();
-
-        for (String address : addresses) {
-            List<Person> personsByAddress = personRepository.findByAddress(address);
-            personsCovered.addAll(personsByAddress);
-        }
-
-        fireStation.setPersonsCovered(personsCovered);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.safetyNet.safetyNetAlerts.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetyNet.safetyNetAlerts.model.PersonModelForTesting;
+import com.safetyNet.safetyNetAlerts.model.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,9 +20,9 @@ public class JsonReaderTest {
         JsonReader jsonReader = new JsonReader(mapper);
         String filePath = "src/test/resources/test.json";
         String node = "data";
-        Class<PersonModelForTesting> valueType = PersonModelForTesting.class;
+        Class<Person> valueType = Person.class;
 
-        List<PersonModelForTesting> result = jsonReader.readListFromFile(filePath, node, valueType);
+        List<Person> result = jsonReader.readListFromFile(filePath, node, valueType);
 
         assertEquals(2, result.size());
         assertEquals("John", result.getFirst().getFirstName());
@@ -39,7 +39,7 @@ public class JsonReaderTest {
         JsonReader jsonReader = new JsonReader(mapper);
         String filePath = "src/test/resources/wrongFile.json";
         String node = "data";
-        Class<PersonModelForTesting> valueType = PersonModelForTesting.class;
+        Class<Person> valueType = Person.class;
 
         assertThrows(Exception.class, () ->
                 jsonReader.readListFromFile(filePath, node, valueType));

@@ -19,8 +19,6 @@ public interface PersonService {
 
     List<Person> findAll();
 
-    Set<String> getCommunityEmails(String city);
-
     void create(Person person);
 
     void creates(List<Person> personList);
@@ -28,7 +26,4 @@ public interface PersonService {
     void update(Person person);
 
     void delete(String firstName, String lastName);
-
-    ResidentDTO getPersonInfo(String firstName, String lastName);
-
 }

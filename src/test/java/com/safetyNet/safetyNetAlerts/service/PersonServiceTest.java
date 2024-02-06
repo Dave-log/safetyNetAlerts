@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -101,24 +100,6 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetCommunityEmails() {
-        String city = "Paris";
-        String email1 = "johndoe@email.com";
-        String email2 = "janedoe@email.com";
-        Set<String> expectedEmails = Set.of(email1, email2);
-        List<Person> personsByCity = List.of(
-                Person.builder().firstName("John").lastName("Doe").email(email1).build(),
-                Person.builder().firstName("Jane").lastName("Doe").email(email2).build()
-        );
-        when(mockPersonRepository.findByCity(city)).thenReturn(personsByCity);
-
-        Set<String> result = personService.getCommunityEmails(city);
-
-        assertEquals(expectedEmails.size(), result.size());
-        assertEquals(expectedEmails, result);
-    }
-
-    @Test
     public void testCreate() {
         Person person = Person.builder().firstName("John").lastName("Doe").build();
 
@@ -184,28 +165,5 @@ public class PersonServiceTest {
         personService.delete(firstName, lastName);
 
         verify(mockPersonRepository, never()).delete(any());
-    }
-
-    @Test
-    public void testGetPersonInfo_PersonExists() {
-        String firstName = "John";
-        String lastName = "Doe";
-        Person person = Person.builder().firstName(firstName).lastName(lastName).build();
-        when(mockPersonRepository.find(firstName, lastName)).thenReturn(person);
-
-        ResidentDTO residentDTO = personService.getPersonInfo(firstName, lastName);
-
-        assertEquals("John Doe", residentDTO.getName());
-    }
-
-    @Test
-    public void testGetPersonInfo_PersonNotExists() {
-        String firstName = "John";
-        String lastName = "Doe";
-        when(mockPersonRepository.find(firstName, lastName)).thenReturn(null);
-
-        ResidentDTO residentDTO = personService.getPersonInfo(firstName, lastName);
-
-        assertNull(residentDTO.getName());
     }
 }

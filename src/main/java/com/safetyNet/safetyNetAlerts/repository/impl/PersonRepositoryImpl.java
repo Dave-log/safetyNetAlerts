@@ -58,8 +58,6 @@ public class PersonRepositoryImpl implements PersonRepository {
     @Override
     public void save(Person person) {
         personMap.put(Pair.of(person.getFirstName(), person.getLastName()), person);
-        attributeMedicalRecord(person);
-        calculateAgeAndAssignToPerson(person);
     }
 
     @Override
@@ -83,21 +81,4 @@ public class PersonRepositoryImpl implements PersonRepository {
     public void delete(Person person) {
         personMap.remove(Pair.of(person.getFirstName(), person.getLastName()));
     }
-
-    public void attributeMedicalRecord(Person person) {
-        String firstName = person.getFirstName();
-        String lastName = person.getLastName();
-        MedicalRecord matchingMedicalRecord = medicalRecordRepository.find(firstName, lastName);
-
-        if (matchingMedicalRecord == null) {
-            throw new MedicalRecordNotFoundException(firstName, lastName);
-        }
-        person.setMedicalRecord(matchingMedicalRecord);
-    }
-
-    public void calculateAgeAndAssignToPerson(Person person) {
-        String birthdate = person.getMedicalRecord().getBirthdate();
-        person.setAge(AgeCalculator.calculate(birthdate));
-    }
-
 }

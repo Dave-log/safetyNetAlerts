@@ -1,6 +1,6 @@
 package com.safetyNet.safetyNetAlerts.controller;
 
-import com.safetyNet.safetyNetAlerts.service.PersonService;
+import com.safetyNet.safetyNetAlerts.service.CommunityEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,10 @@ import java.util.Set;
 public class CommunityEmailController {
 
     @Autowired
-    PersonService personService;
+    CommunityEmailService communityEmailService;
 
     @GetMapping
     public Set<String> getCommunityEmails(@RequestParam String city) {
-        return personService.getCommunityEmails(city);
+        return communityEmailService.getCommunityEmails(city);
     }
 }

@@ -27,7 +27,7 @@ public class FireStationController {
     }
 
     @GetMapping("/all")
-    public Collection<FireStation> findAll() {
+    public List<FireStation> findAll() {
         return fireStationService.findAll();
     }
 
