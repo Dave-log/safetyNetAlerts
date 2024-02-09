@@ -35,7 +35,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         medicalRecordRepository.save(medicalRecord);
     }
 
-    public void creates(List<MedicalRecord> medicalRecordList) {
+    public void create(List<MedicalRecord> medicalRecordList) {
         medicalRecordRepository.saveAll(medicalRecordList);
     }
 

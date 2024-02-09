@@ -34,8 +34,8 @@ public class MedicalRecordController {
     }
 
     @PostMapping("/list")
-    public void creates(@RequestBody List<MedicalRecord> listMedicalRecords) {
-        medicalRecordService.creates(listMedicalRecords);
+    public void create(@RequestBody List<MedicalRecord> listMedicalRecords) {
+        medicalRecordService.create(listMedicalRecords);
     }
 
     @PutMapping

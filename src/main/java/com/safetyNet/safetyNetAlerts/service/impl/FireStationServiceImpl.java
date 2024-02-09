@@ -57,7 +57,7 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public void creates(List<FireStation> fireStationList) {
+    public void create(List<FireStation> fireStationList) {
         fireStationRepository.saveAll(fireStationList);
     }
 

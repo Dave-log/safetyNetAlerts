@@ -43,7 +43,7 @@ public class InitData {
                 fireStationRepository.saveAll(jsonReader.readListFromFile(jsonFilePath, "firestations", FireStation.class));
 
                 for (Person person : personRepository.findAll()) {
-                    attributeMedicalRecordToPersons(person);
+                    attributeMedicalRecordToPerson(person);
                     calculateAgeAndAssignToPerson(person);
                 }
                 for (FireStation fireStation : fireStationRepository.findAll()) {
@@ -57,7 +57,7 @@ public class InitData {
         };
     }
 
-    private void attributeMedicalRecordToPersons(Person person) {
+    private void attributeMedicalRecordToPerson(Person person) {
         String firstName = person.getFirstName();
         String lastName = person.getLastName();
         MedicalRecord matchingMedicalRecord = medicalRecordRepository.find(firstName, lastName);

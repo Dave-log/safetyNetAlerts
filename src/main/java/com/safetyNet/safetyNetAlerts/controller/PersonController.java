@@ -38,8 +38,8 @@ public class PersonController {
     }
 
     @PostMapping("/list")
-    public void creates(@RequestBody List<Person> personList) {
-        personService.creates(personList);
+    public void create(@RequestBody List<Person> personList) {
+        personService.create(personList);
     }
 
     @PutMapping

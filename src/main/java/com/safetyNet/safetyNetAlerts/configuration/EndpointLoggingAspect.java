@@ -37,14 +37,19 @@ public class EndpointLoggingAspect {
         logger.info("Calling endpoint - URL: {}, Method: {}, Controller: {}, MethodName: {}, Params: {}", url, method, controller, methodName, params);
     }
 
-    @AfterReturning(pointcut = "endpointMethods()", returning = "response")
-    public void logSuccess(JoinPoint joinPoint, Object response) throws JsonProcessingException {
+    @AfterReturning(pointcut = "endpointMethods() && @annotation(org.springframework.web.bind.annotation.GetMapping)", returning = "response")
+    public void logSuccessGet(JoinPoint joinPoint, Object response) throws JsonProcessingException {
         if (response == null) {
             logger.warn("Please verify request method or provided params");
         } else {
             String jsonResponse = writer.writeValueAsString(response);
             logger.info("Endpoint success. Response : {}", jsonResponse);
         }
+    }
+
+    @AfterReturning(pointcut = "endpointMethods() && !@annotation(org.springframework.web.bind.annotation.GetMapping)")
+    public void logSuccess(JoinPoint joinPoint) throws JsonProcessingException {
+        logger.info("Endpoint success");
     }
 
     @AfterThrowing(pointcut = "endpointMethods()", throwing = "exception")

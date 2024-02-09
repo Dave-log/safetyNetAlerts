@@ -21,7 +21,7 @@ public interface PersonService {
 
     void create(Person person);
 
-    void creates(List<Person> personList);
+    void create(List<Person> personList);
 
     void update(Person person);
 

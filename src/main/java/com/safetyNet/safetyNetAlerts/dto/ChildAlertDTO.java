@@ -2,8 +2,6 @@ package com.safetyNet.safetyNetAlerts.dto;
 
 import com.safetyNet.safetyNetAlerts.model.Person;
 import lombok.Getter;
-import org.springframework.data.util.Pair;
-import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.List;
 

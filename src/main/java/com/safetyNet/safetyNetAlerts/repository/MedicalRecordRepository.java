@@ -1,11 +1,7 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
-import org.springframework.data.util.Pair;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface MedicalRecordRepository {
 

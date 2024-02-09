@@ -12,7 +12,7 @@ public interface MedicalRecordService {
 
     void create(MedicalRecord medicalRecord);
 
-    void creates(List<MedicalRecord> medicalRecordList);
+    void create(List<MedicalRecord> medicalRecordList);
 
     void update(MedicalRecord medicalRecord);
 

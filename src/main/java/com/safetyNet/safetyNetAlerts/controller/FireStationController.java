@@ -37,8 +37,8 @@ public class FireStationController {
     }
 
     @PostMapping("/list")
-    public void creates(@RequestBody List<FireStation> listFireStations) {
-        fireStationService.creates(listFireStations);
+    public void create(@RequestBody List<FireStation> listFireStations) {
+        fireStationService.create(listFireStations);
     }
 
     @PutMapping

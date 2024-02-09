@@ -73,7 +73,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void creates(List<Person> personList) {
+    public void create(List<Person> personList) {
         personRepository.saveAll(personList);
     }
 

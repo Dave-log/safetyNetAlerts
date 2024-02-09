@@ -20,7 +20,7 @@ public interface FireStationService {
 
     void create(FireStation fireStation);
 
-    void creates(List<FireStation> fireStationList);
+    void create(List<FireStation> fireStationList);
 
     void update(String address, Integer newStationNumber);
 
