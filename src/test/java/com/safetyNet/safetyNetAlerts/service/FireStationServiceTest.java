@@ -95,7 +95,7 @@ public class FireStationServiceTest {
                 FireStation.builder().stationNumber(6).build()
         );
 
-        fireStationService.creates(fireStationList);
+        fireStationService.create(fireStationList);
 
         verify(mockFireStationRepository).saveAll(fireStationList);
     }

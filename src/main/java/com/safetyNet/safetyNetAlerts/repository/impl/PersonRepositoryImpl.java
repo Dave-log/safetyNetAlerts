@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 @Repository
 public class PersonRepositoryImpl implements PersonRepository {
 
-    private static final Logger logger = LogManager.getLogger(PersonRepositoryImpl.class);
-
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
 

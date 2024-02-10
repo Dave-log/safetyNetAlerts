@@ -97,7 +97,7 @@ public class PersonControllerTest {
                 .content(newMockPersonListToJson))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        verify(mockPersonService).creates(newMockPersonList);
+        verify(mockPersonService).create(newMockPersonList);
     }
 
     @Test

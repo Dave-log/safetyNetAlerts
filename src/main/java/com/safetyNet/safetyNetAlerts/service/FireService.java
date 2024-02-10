@@ -2,7 +2,6 @@ package com.safetyNet.safetyNetAlerts.service;
 
 import com.safetyNet.safetyNetAlerts.dto.FireDTO;
 import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
-import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.safetyNet.safetyNetAlerts.repository.impl;
 
-import com.safetyNet.safetyNetAlerts.exceptions.AddressNotFoundException;
 import com.safetyNet.safetyNetAlerts.exceptions.StationNotFoundException;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.model.Person;
@@ -88,7 +87,7 @@ public class FireStationRepositoryImpl implements FireStationRepository {
             }
 
         } else {
-            logger.error("Firestation n°" + stationNumber + "does not exist.");
+            logger.error("Firestation n°" + stationNumber + " does not exist.");
         }
     }
 
@@ -96,9 +95,9 @@ public class FireStationRepositoryImpl implements FireStationRepository {
     public void deleteFireStation(Integer stationNumber) {
         if (fireStationMap.containsKey(stationNumber)) {
             fireStationMap.remove(stationNumber);
-            logger.info("Firestation n°" + stationNumber + "has been deleted.");
+            logger.info("Firestation n°" + stationNumber + " has been deleted.");
         } else {
-            logger.error("Firestation n°" + stationNumber + "does not exist.");
+            logger.error("Firestation n°" + stationNumber + " does not exist.");
         }
     }
 

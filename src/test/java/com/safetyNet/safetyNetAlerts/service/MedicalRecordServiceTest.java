@@ -65,7 +65,7 @@ public class MedicalRecordServiceTest {
                 MedicalRecord.builder().firstName("Jane").lastName("Doe").build()
         );
 
-        medicalRecordService.creates(medicalRecordList);
+        medicalRecordService.create(medicalRecordList);
 
         verify(mockMedicalRecordRepository).saveAll(medicalRecordList);
     }

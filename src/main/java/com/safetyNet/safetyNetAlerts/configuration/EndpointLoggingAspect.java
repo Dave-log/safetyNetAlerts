@@ -15,6 +15,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * This aspect intercepts all requests and responses provided from HTTP endpoints,
+ * with the aim of logging them.
+ */
 @Aspect
 @Component
 public class EndpointLoggingAspect {
@@ -32,13 +36,13 @@ public class EndpointLoggingAspect {
         String method = request.getMethod();
         String controller = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
-        String params = getRequestParams(joinPoint, request);
+        String params = getRequestParams(request);
 
         logger.info("Calling endpoint - URL: {}, Method: {}, Controller: {}, MethodName: {}, Params: {}", url, method, controller, methodName, params);
     }
 
     @AfterReturning(pointcut = "endpointMethods() && @annotation(org.springframework.web.bind.annotation.GetMapping)", returning = "response")
-    public void logSuccessGet(JoinPoint joinPoint, Object response) throws JsonProcessingException {
+    public void logSuccessGet( Object response) throws JsonProcessingException {
         if (response == null) {
             logger.warn("Please verify request method or provided params");
         } else {
@@ -48,7 +52,7 @@ public class EndpointLoggingAspect {
     }
 
     @AfterReturning(pointcut = "endpointMethods() && !@annotation(org.springframework.web.bind.annotation.GetMapping)")
-    public void logSuccess(JoinPoint joinPoint) throws JsonProcessingException {
+    public void logSuccess() {
         logger.info("Endpoint success");
     }
 
@@ -57,7 +61,7 @@ public class EndpointLoggingAspect {
         logger.error("Endpoint error:", exception);
     }
 
-    private String getRequestParams(JoinPoint joinPoint, HttpServletRequest request) {
+    private String getRequestParams(HttpServletRequest request) {
         Map<String, String[]> requestParams = request.getParameterMap();
         return requestParams.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + String.join(",", entry.getValue()))

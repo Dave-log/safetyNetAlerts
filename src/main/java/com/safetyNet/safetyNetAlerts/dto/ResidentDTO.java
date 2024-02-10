@@ -2,7 +2,6 @@ package com.safetyNet.safetyNetAlerts.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.safetyNet.safetyNetAlerts.configuration.Views;
-import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

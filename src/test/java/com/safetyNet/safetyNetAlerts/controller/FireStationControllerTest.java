@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,7 +103,7 @@ public class FireStationControllerTest {
                 .content(newMockFireStationListToJson))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        verify(mockFireStationService).creates(newMockFireStationList);
+        verify(mockFireStationService).create(newMockFireStationList);
     }
 
     @Test

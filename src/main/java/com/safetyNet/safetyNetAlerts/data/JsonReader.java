@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.List;
 
 public class JsonReader {
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     public JsonReader(ObjectMapper mapper) {
         this.mapper = mapper;

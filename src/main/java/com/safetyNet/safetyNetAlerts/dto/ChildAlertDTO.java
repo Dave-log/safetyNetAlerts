@@ -12,10 +12,10 @@ public class ChildAlertDTO {
     private final int age;
     private final List<Person> householdMembers;
 
-    public ChildAlertDTO(Person child, List<Person> householdMembers) {
-        this.firstName = child.getFirstName();
-        this.lastName = child.getLastName();
-        this.age = child.getAge();
+    public ChildAlertDTO(String firstName, String lastName, int age, List<Person> householdMembers) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
         this.householdMembers = householdMembers;
     }
 }

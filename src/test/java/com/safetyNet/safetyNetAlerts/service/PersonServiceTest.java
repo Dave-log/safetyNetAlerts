@@ -1,7 +1,6 @@
 package com.safetyNet.safetyNetAlerts.service;
 
 import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
-import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import com.safetyNet.safetyNetAlerts.service.impl.PersonServiceImpl;
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -115,7 +113,7 @@ public class PersonServiceTest {
                 Person.builder().firstName("Jane").lastName("Doe").build()
         );
 
-        personService.creates(personList);
+        personService.create(personList);
 
         verify(mockPersonRepository).saveAll(personList);
     }

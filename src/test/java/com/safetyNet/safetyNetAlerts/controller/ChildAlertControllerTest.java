@@ -76,8 +76,18 @@ public class ChildAlertControllerTest {
                 Person.builder().firstName("Jane").lastName("Doe").age(32).build());
         List<Person> householdMembers2 = List.of(Person.builder().firstName("Joy").lastName("Doe").age(42).build());
 
-        ChildAlertDTO childAlertDTO1 = new ChildAlertDTO(child1, householdMembers1);
-        ChildAlertDTO childAlertDTO2 = new ChildAlertDTO(child2, householdMembers2);
+        ChildAlertDTO childAlertDTO1 = new ChildAlertDTO(
+                child1.getFirstName(),
+                child1.getLastName(),
+                child1.getAge(),
+                householdMembers1
+        );
+        ChildAlertDTO childAlertDTO2 = new ChildAlertDTO(
+                child2.getFirstName(),
+                child2.getLastName(),
+                child2.getAge(),
+                householdMembers2
+        );
 
         return Arrays.asList(childAlertDTO1, childAlertDTO2);
     }

@@ -3,7 +3,7 @@ package com.safetyNet.safetyNetAlerts.controller;
 import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.model.Person;
-import com.safetyNet.safetyNetAlerts.service.PersonService;
+import com.safetyNet.safetyNetAlerts.service.PersonInfoService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PersonInfoControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PersonService mockPersonService;
+    private PersonInfoService mockPersonInfoService;
 
     @InjectMocks
     private PersonInfoController personInfoController;
@@ -47,7 +47,7 @@ public class PersonInfoControllerTest {
                 new MedicalRecord(firstName, lastName, "01/01/1900", Collections.emptyList(), Collections.emptyList())
         ));
 
-        when(mockPersonService.getPersonInfo(firstName, lastName)).thenReturn(residentDTO);
+        when(mockPersonInfoService.getPersonInfo(firstName, lastName)).thenReturn(residentDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/personInfo")
                 .param("firstName", firstName)
@@ -61,6 +61,6 @@ public class PersonInfoControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.medications").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.allergies").isArray());
 
-        verify(mockPersonService).getPersonInfo(firstName, lastName);
+        verify(mockPersonInfoService).getPersonInfo(firstName, lastName);
     }
 }

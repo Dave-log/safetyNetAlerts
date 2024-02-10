@@ -7,8 +7,6 @@ import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.FireStationRepository;
 import com.safetyNet.safetyNetAlerts.service.AgeGroupCounter;
 import com.safetyNet.safetyNetAlerts.service.FireStationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +15,6 @@ import java.util.List;
 
 @Service
 public class FireStationServiceImpl implements FireStationService {
-
-    private static final Logger logger = LogManager.getLogger(FireStationServiceImpl.class);
 
     @Autowired
     private final FireStationRepository fireStationRepository;

@@ -2,13 +2,12 @@ package com.safetyNet.safetyNetAlerts.repository;
 
 import com.safetyNet.safetyNetAlerts.model.MedicalRecord;
 import com.safetyNet.safetyNetAlerts.repository.impl.MedicalRecordRepositoryImpl;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.util.Pair;
 
 import java.util.*;
 
@@ -28,6 +27,7 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testFind_MedicalRecordExists() {
+        // Given
         MedicalRecord mockMedicalRecord = new MedicalRecord(
                 "Roger",
                 "Boyd",
@@ -36,10 +36,12 @@ public class MedicalRecordRepositoryTest {
                 Collections.emptyList()
         );
 
+        // When
         when(mockMedicalRecordMap.get(any())).thenReturn(mockMedicalRecord);
 
         MedicalRecord realMedicalRecord = medicalRecordRepository.find("Roger", "Boyd");
 
+        // Then
         assertEquals(mockMedicalRecord, realMedicalRecord);
     }
 
@@ -78,6 +80,7 @@ public class MedicalRecordRepositoryTest {
 
     @Test
     public void testSave_Success() {
+        // Given
         String firstName = "John";
         String lastName = "Doe";
 
@@ -89,15 +92,18 @@ public class MedicalRecordRepositoryTest {
                 Collections.emptyList()
         );
 
+        // When
         when(mockMedicalRecordMap.put(Pair.of(firstName, lastName), medicalRecordToSave)).thenReturn(null);
 
         medicalRecordRepository.save(medicalRecordToSave);
 
+        // Then
         verify(mockMedicalRecordMap).put(Pair.of(firstName, lastName), medicalRecordToSave);
     }
 
     @Test
     public void testUpdate_Success() {
+        // Given
         String firstName = "John";
         String lastName = "Doe";
 
@@ -117,10 +123,12 @@ public class MedicalRecordRepositoryTest {
                 Arrays.asList("n","e","w")
         );
 
+        // When
         when(mockMedicalRecordMap.get(Pair.of(firstName, lastName))).thenReturn(existingMedicalRecord);
 
         medicalRecordRepository.update(updatedMedicalRecord);
 
+        // Then
         verify(mockMedicalRecordMap).get(Pair.of(firstName, lastName));
 
         assertEquals("new birthdate", existingMedicalRecord.getBirthdate());

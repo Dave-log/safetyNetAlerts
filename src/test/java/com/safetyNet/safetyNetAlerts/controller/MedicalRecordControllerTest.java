@@ -98,7 +98,7 @@ public class MedicalRecordControllerTest {
                 .content(newMockMedicalRecordListToJson))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        verify(mockMedicalRecordService).creates(newMockMedicalRecordList);
+        verify(mockMedicalRecordService).create(newMockMedicalRecordList);
     }
 
     @Test

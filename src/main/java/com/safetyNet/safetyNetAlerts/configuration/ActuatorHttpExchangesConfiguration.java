@@ -5,9 +5,9 @@ import org.springframework.boot.actuate.web.exchanges.InMemoryHttpExchangeReposi
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/*
-    Allows Actuator httpexchanges
-    Replace Actuator httptrace because it is deprecated
+/**
+ * Allows Actuator httpexchanges
+ * Replace Actuator httptrace because it is deprecated
  */
 @Configuration
 public class ActuatorHttpExchangesConfiguration {

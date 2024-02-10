@@ -1,7 +1,6 @@
 package com.safetyNet.safetyNetAlerts.service.impl;
 
 import com.safetyNet.safetyNetAlerts.dto.ChildAlertDTO;
-import com.safetyNet.safetyNetAlerts.dto.ResidentDTO;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.PersonRepository;
 import com.safetyNet.safetyNetAlerts.service.PersonService;
@@ -12,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -55,7 +52,11 @@ public class PersonServiceImpl implements PersonService {
                         .filter(p -> !AgeCalculator.isChild(p.getAge()))
                         .toList();
 
-                ChildAlertDTO childAlertDTO = new ChildAlertDTO(person, householdMembers);
+                ChildAlertDTO childAlertDTO = new ChildAlertDTO(
+                        person.getFirstName(),
+                        person.getLastName(),
+                        person.getAge(),
+                        householdMembers);
                 listChildren.add(childAlertDTO);
             }
         }

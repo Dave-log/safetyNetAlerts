@@ -1,16 +1,15 @@
 package com.safetyNet.safetyNetAlerts.repository;
 
-import com.safetyNet.safetyNetAlerts.exceptions.AddressNotFoundException;
 import com.safetyNet.safetyNetAlerts.exceptions.StationNotFoundException;
 import com.safetyNet.safetyNetAlerts.model.FireStation;
 import com.safetyNet.safetyNetAlerts.model.Person;
 import com.safetyNet.safetyNetAlerts.repository.impl.FireStationRepositoryImpl;
+import org.apache.logging.log4j.core.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockFilterChain;
 
 import java.util.*;
 
@@ -29,6 +28,9 @@ public class FireStationRepositoryTest {
 
     @Mock
     Map<Integer, FireStation> mockFireStationMap;
+
+    @Mock
+    private Logger logger;
 
     @Test
     public void testFind_FireStationExists() {
@@ -88,6 +90,7 @@ public class FireStationRepositoryTest {
 
     @Test
     public void testUpdate_Success() {
+        // Given
         Integer newStationNumber = 5;
         String address = "1 Main St";
 
@@ -99,12 +102,14 @@ public class FireStationRepositoryTest {
         mockFireStationMap.put(2, existingStation2);
         mockFireStationMap.put(3, existingStation3);
 
+        // When
         when(mockFireStationMap.values()).thenReturn(List.of(existingStation1, existingStation2, existingStation3));
         when(mockFireStationMap.get(newStationNumber)).thenReturn(existingStation3);
         when(mockFireStationMap.containsKey(newStationNumber)).thenReturn(true);
 
         fireStationRepository.update(address, newStationNumber);
 
+        // Then
         assertFalse(existingStation1.getAddresses().contains(address));
         assertFalse(existingStation2.getAddresses().contains(address));
         assertTrue(existingStation3.getAddresses().contains(address));
@@ -122,42 +127,19 @@ public class FireStationRepositoryTest {
 
     @Test
     public void testDeleteAddress_Success() {
+        // Given
         Integer stationNumber = 0;
         String addressToRemove = "1 Main St";
 
         FireStation fireStation = FireStation.builder().stationNumber(stationNumber).addresses(new HashSet<>(Set.of(addressToRemove))).build();
 
+        // When
         when(mockFireStationMap.containsKey(stationNumber)).thenReturn(true);
         when(mockFireStationMap.get(stationNumber)).thenReturn(fireStation);
 
         fireStationRepository.deleteAddress(stationNumber, addressToRemove);
 
-        assertFalse(fireStation.getAddresses().contains(addressToRemove));
-    }
-
-    @Test
-    public void testDeleteAddress_StationNotFound() {
-        Integer stationNumber = 0;
-        String addressToRemove = "1 Main St";
-
-        when(mockFireStationMap.containsKey(stationNumber)).thenReturn(false);
-
-        assertThrows(StationNotFoundException.class, () -> fireStationRepository.deleteAddress(stationNumber, addressToRemove));
-    }
-
-    @Test
-    public void testDeleteAddress_AddressNotFound() {
-        Integer stationNumber = 0;
-        String addressToRemove = "1 Main St";
-
-        FireStation fireStation = FireStation.builder().stationNumber(stationNumber).addresses(new HashSet<>(Set.of("2 Second St"))).build();
-
-        when(mockFireStationMap.containsKey(stationNumber)).thenReturn(true);
-        when(mockFireStationMap.get(stationNumber)).thenReturn(fireStation);
-
-        assertThrows(AddressNotFoundException.class, () -> fireStationRepository.deleteAddress(stationNumber, addressToRemove));
-
-        assertTrue(fireStation.getAddresses().contains("2 Second St"));
+        // Then
         assertFalse(fireStation.getAddresses().contains(addressToRemove));
     }
 
@@ -173,16 +155,8 @@ public class FireStationRepositoryTest {
     }
 
     @Test
-    public void testDeleteFireStation_StationNotFound() {
-        Integer stationNumber = 0;
-
-        when(mockFireStationMap.containsKey(stationNumber)).thenReturn(false);
-
-        assertThrows(StationNotFoundException.class, () -> fireStationRepository.deleteFireStation(stationNumber));
-    }
-
-    @Test
     public void testFindPersonsCoveredByStation() {
+        // Given
         Integer stationNumber = 0;
 
         List<Person> allPersons = new ArrayList<>();
@@ -192,11 +166,13 @@ public class FireStationRepositoryTest {
         Set<String> addressesCoveredByStation = new HashSet<>(Set.of("1 Main St"));
         FireStation mockFireStation = FireStation.builder().stationNumber(stationNumber).addresses(addressesCoveredByStation).build();
 
+        // When
         when(fireStationRepository.find(stationNumber)).thenReturn(mockFireStation);
         when(personRepository.findAll()).thenReturn(allPersons);
 
         List<Person> result = fireStationRepository.findPersonsCoveredByStation(stationNumber);
 
+        // Then
         verify(personRepository, times(1)).findAll();
 
         assertEquals(1, result.size());

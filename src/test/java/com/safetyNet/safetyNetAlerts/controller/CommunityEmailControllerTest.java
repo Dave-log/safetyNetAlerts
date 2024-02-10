@@ -1,6 +1,6 @@
 package com.safetyNet.safetyNetAlerts.controller;
 
-import com.safetyNet.safetyNetAlerts.service.PersonService;
+import com.safetyNet.safetyNetAlerts.service.CommunityEmailService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class CommunityEmailControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PersonService mockPersonService;
+    private CommunityEmailService mockCommunityEmailService;
 
     @InjectMocks
     private CommunityEmailController communityEmailController;
@@ -35,7 +35,7 @@ public class CommunityEmailControllerTest {
         String city = "Culver";
         Set<String> communityEmails = new HashSet<>(Arrays.asList("john.doe@email.com", "jane.doe@email.com"));
 
-        when(mockPersonService.getCommunityEmails(city)).thenReturn(communityEmails);
+        when(mockCommunityEmailService.getCommunityEmails(city)).thenReturn(communityEmails);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/communityEmail")
                 .param("city", city)
@@ -43,7 +43,7 @@ public class CommunityEmailControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(communityEmails.size()));
 
-        verify(mockPersonService).getCommunityEmails(city);
+        verify(mockCommunityEmailService).getCommunityEmails(city);
     }
 
 
